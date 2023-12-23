@@ -1,0 +1,98 @@
+{
+	// Place your Codeforces workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Python Boilerplate": {
+		"prefix": "lpy",
+		"body": [
+			"# Author: JustKitkat",
+			"# Status: WIP",
+			"",
+			"inp=input",
+			"inf=float('inf')",
+			"",
+			"def sin(): return [i for i in inp().split()]",
+			"def iin(): return [int(i) for i in inp().split()]",
+			"def fin(): return [float(i) for i in inp().split()]",
+			"def iinp(): return int(inp())",
+			"def finp(): return float(inp())",
+			"",
+			"def solve(tc):",
+			"	res=0",
+			"	",
+			"	",
+			"	return res",
+			""
+			"def main():",
+			"	for i in range(iinp()): # Testcases",
+			"		print(solve(i))",
+			"",
+			"main()"
+		],
+		"description": "Load python boilerplate for competitions"
+	},
+	"C++ Boilerplate": {
+		"prefix": "lcp",
+		"body": [
+"// Author: JustKitkat",
+"// Status: WIP",
+"",
+"#include <bits/stdc++.h>",
+"",
+"using namespace std;",
+"",
+"#define endl \"\\n\"",
+"#define ar array",
+"#define ll long long",
+"#define ld long double",
+"",
+
+"#define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \\",
+"chrono::high_resolution_clock::now() - BEG); cout<<\"Time: \"<<duration.count()<<endl;}",
+"#define __log__ { FILE* file = freopen(\"../../../Testcases/test.out\", \"w\", stdout); }",
+"#define __input__ { FILE* file = freopen(\"../../../Testcases/test.in\", \"r\", stdin); }",
+"",
+"const int MAX_N = 1e5 + 5;",
+"const ll INF = 1e9;",
+"const double PI = acos(-1);",
+"const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program",
+"",
+"",
+"void solve(int tc){",
+"    int n;",
+"    ",
+"    ",
+"}",
+"",
+"int main(){",
+"    ios_base::sync_with_stdio(0);",
+"    cin.tie(0); cout.tie(0);",
+"",
+"	__log__ // Redirect output to test.out",
+"	__input__ // Read test.in for input",
+"",
+"    int tc = 1;",
+"    cin >> tc;",
+"    for (int t = 1; t <= tc; t++) {",
+"        // cout << \"Case #\" << t << \": \";",
+"        solve(t);",
+"    }",
+"",
+"	//__time__ //Runtime"
+"}",
+		]
+	}
+}
