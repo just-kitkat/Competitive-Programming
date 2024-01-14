@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -34,8 +34,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __log__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,17 +44,20 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
-    FOR(0,5)cout<<i<<endl;
-    
+    ll n,k,x;
+    cin>>n>>k>>x;
+    string ans="";
+    if((k*((n+1-k)+n))/2>=x && k*(k+1)/2<=x)ans="yes";
+    else ans="no";
+    cout<<ans<<endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     cin >> tc;

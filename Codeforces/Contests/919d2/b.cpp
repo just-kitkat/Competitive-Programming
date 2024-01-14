@@ -16,15 +16,6 @@ using namespace std;
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
-#define pb push_back
-#define mp make_pair
-#define F first
-#define S second
-#define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -34,8 +25,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __log__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,17 +35,32 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
-    FOR(0,5)cout<<i<<endl;
-    
+    int n,k,x;cin>>n>>k>>x;
+    int a[200005];
+    int sum=0;
+    for(int i=0;i<n;i++){cin>>a[i];sum+=a[i];}
+    //int constsum=sum;
+    sort(a,a+n);
+    int sw=0;
+    int ans=INT_MIN;
+    for(int i=0;i<x;i++){sw+=a[n-i-1];}
+    //cout<<sum<<' '<<sw<<endl;
+    for(int i=n-1;i>=max(0,n-k-1);i--){
+        //cout<<sum<<' '<<sw<<' '<<k<<endl;
+        ans=max(ans,sum-sw*2);
+        sum-=a[i];
+        sw=sw+(i-x>=0?a[i-x]:0)-a[i];
+    }
+    if(k>=n)ans=max(0,ans);
+    cout<<ans<<endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+   // __log__ // Redirect output to test.out
+  //  __input__ // Read test.in for input
 
     int tc = 1;
     cin >> tc;
