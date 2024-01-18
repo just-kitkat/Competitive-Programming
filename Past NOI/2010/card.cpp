@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,8 +36,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,9 +46,26 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    vector<pair<int,int>> m;
-    m.pb({1,2});
-    for(auto x:m)cout<<x.F<<' '<<x.S<<endl;
+    int m,k;cin>>m>>k;
+    deque<int> ans;FOR(0,m)ans.pb(i);
+    vector<char>a;
+    char t;
+    cin>>t;
+    while(t!='.'){
+        a.pb(t);cin>>t;
+    }
+    for(auto x:a){
+        if(x=='A'){
+            ans.pb(ans[0]);
+            ans.pop_front();
+        }else{
+            ans.pb(ans[1]);
+            ans.erase(ans.begin()+1);
+        }
+        //FOR(0,m)cout<<ans[i]<<' ';cout<<endl;
+    }
+    FOR(-1,2)cout<<ans[k+i]<<' ';cout<<endl;
+    
     
 }
 
@@ -54,8 +73,8 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;

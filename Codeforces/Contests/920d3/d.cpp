@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -21,7 +21,7 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
+#define FOR(a_,b_) for(auto i=a_;i<b_;++i)
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
@@ -34,8 +34,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,9 +44,33 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    vector<pair<int,int>> m;
-    m.pb({1,2});
-    for(auto x:m)cout<<x.F<<' '<<x.S<<endl;
+    int n,m;
+    cin>>n>>m;
+    long a[200005],b[200005];
+    FOR(0,n)cin>>a[i];
+    FOR(0,m)cin>>b[i];
+    sort(a,a+n);sort(b,b+m);
+    int a1=0,a2=n-1,b1=0,b2=m-1;
+    ll ans=0;
+    while(a1<=a2){
+        if(abs(a[a1]-b[b2])>abs(a[a2]-b[b1])){
+            ans+=abs(a[a1]-b[b2]);
+            a1++;b2--;
+        }else{
+            ans+=abs(a[a2]-b[b1]);
+            a2--;b1++;
+        }
+        /*
+        // code below fails edge case (dont do 2 edges at the same time)
+        if(a1==a2){
+            ans+=max(abs(a[a1]-b[b2]), abs(a[a2]-b[b1]));
+            break;
+        }
+        ans+=abs(a[a1]-b[b2])+abs(a[a2]-b[b1]);
+        a1++;a2--;b1++;b2--;*/
+    }
+    cout<<ans<<endl;
+    
     
 }
 
@@ -54,11 +78,11 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

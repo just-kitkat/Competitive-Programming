@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -34,8 +34,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __log__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,18 +44,27 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    vector<pair<int,int>> m;
-    m.pb({1,2});
-    for(auto x:m)cout<<x.F<<' '<<x.S<<endl;
-    
+    ll n;
+    cin>>n;
+    string a[]={"8","0","2","4","6"},b[]={"0","2","4","6","8"};
+    string ans="";
+    ll c=n;
+    ans+=a[c%5];
+    while(ceil(c/5)!=0){
+        c=ceil((ld)c/5);
+        ans+=a[c%5];
+    }
+    if(ans.back()=='0'&&ans.size()>1)ans.pop_back();
+    reverse(all(ans));
+    cout<<ans<<endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;

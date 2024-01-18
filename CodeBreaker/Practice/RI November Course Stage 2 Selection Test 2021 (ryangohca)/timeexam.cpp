@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,8 +36,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,9 +46,16 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    vector<pair<int,int>> m;
-    m.pb({1,2});
-    for(auto x:m)cout<<x.F<<' '<<x.S<<endl;
+    ll n;cin>>n;
+    if(n<10)cout<<"000"<<n<<endl;
+    else if(n<60)cout<<"00"<<n<<endl;
+    else{
+        string mins=to_string(n%60);
+        if(mins.size()<2)mins=(mins.size()==1?"0":"00")+mins;
+        string hours=to_string(n/60%24);
+        if(hours.size()<2)hours=(hours.size()==1?"0":"00")+hours;
+        cout<<hours<<mins<<endl;
+    }
     
 }
 
@@ -54,8 +63,8 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;
