@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: TLE
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -44,17 +44,33 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+/*
+7
+100 200 500 300 400 200 100
+5   2   0   5   7   1   3
+
+sort in order of rate of increase (decreasing)
+0. 7   400
+1. 5   300
+2. 5   100
+3. 3   100
+4. 2   200
+5. 1   200
+6. 0   500
+Cost: 0*7+400 + 1*5+300 + ok i gotit
+*/
 
 void solve(int tc){
     int n;
     cin>>n;
-    vi a(n,0);
-    int x;
-    vi dp(n,1);
-    FOR(0,n)cin>>a[i];
-    FOR(0,n)JFOR(0,i)if(a[i]>a[j])dp[i]=max(dp[i],dp[j]+1);
-    int ans=*max_element(all(dp));
+    ll ans=0;int t;
+    vi s(n),c(n);FOR(0,n){
+        cin>>t;ans+=t;
+    };FOR(0,n)cin>>c[i];
+    sort(all(c),greater<>());
+    FOR(0,n)ans+=i*c[i];
     cout<<ans<<endl;
+    
 }
 
 int main(){

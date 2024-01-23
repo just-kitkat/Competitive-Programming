@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,8 +36,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,7 +46,37 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    DFOR(10,0)cout<<i<<endl;
+    int n;
+    cin>>n;
+    string s,t;
+    cin>>s>>t;
+    if(s==t){
+        cout<<"0\n";return;
+    }
+    int nn=0;
+    FOR(0,n){
+        if(s[i]=='B'&&t[i]=='B')continue;
+        else if(t[i]=='A')nn++;
+        break;
+    }
+    DFOR(n-1,0){
+        if(s[i]=='A'&&t[i]=='A')continue;
+        else if(t[i]=='B')nn++;
+        break;
+    }
+    if(nn!=2)cout<<-1<<endl;
+    else{
+        int ans=0,before=0;
+        FOR(0,n){
+            if(s[i]=='B'&&t[i]=='A'){before++;ans++;}
+            if(s[i]=='A'&&t[i]=='B'){
+                if(before<=0)ans++;
+                else before--;
+            }
+        }
+        cout<<ans<<endl;
+    }
+    
     
 }
 
@@ -52,8 +84,8 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;

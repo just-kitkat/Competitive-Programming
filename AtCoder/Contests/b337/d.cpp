@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,8 +36,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,7 +46,48 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    DFOR(10,0)cout<<i<<endl;
+    int h,w,k;
+    cin>>h>>w>>k;
+    //h rows, w columns
+    //o,x,. rep by H strings of len W
+    // replace . to o in one operation
+    // k consecutive cells with o
+    vector<vector<char>> a(h,vector<char>(w));
+    char tmp;
+    int ans=INT_MAX;
+    FOR(0,h){
+        int dot=0,o=0;
+        JFOR(0,w){
+            cin>>tmp;
+            a[i][j]=tmp;
+            if(tmp=='x'){dot=0;o=0;}
+            else if(dot+o < k){
+                if(tmp=='.')dot++;else o++;
+                if(dot+o==k)ans=min(ans,dot);
+            }else{
+                if(tmp=='.')dot++;else o++;
+                if(a[i][j-k]=='.')dot--;else o--;
+                ans=min(ans, dot);
+            }
+        }
+    }
+    //do cols
+    FOR(0,w){
+        int dot=0,o=0;
+        JFOR(0,h){
+            tmp=a[j][i];
+            if(tmp=='x'){dot=0;o=0;}
+            else if(dot+o < k){
+                if(tmp=='.')dot++;else o++;
+                if(dot+o==k)ans=min(ans,dot);
+            }else{
+                if(tmp=='.')dot++;else o++;
+                if(a[j-k][i]=='.')dot--;else o--;
+                ans=min(ans, dot);
+            }
+        }
+    }
+    cout<<(ans==INT_MAX?-1:ans)<<endl;
     
 }
 
@@ -52,8 +95,8 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;

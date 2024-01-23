@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: MLE
 
 #include <bits/stdc++.h>
 
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,17 +36,33 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+unordered_set<string>ans;
+void dfs(string a){
+    if(a.size()<2||ans.count(a)){ans.insert(a);return;}
+    ans.insert(a);
+    string tmp=a;
+    tmp.erase(0,1);
+    dfs(tmp);
+    tmp=a;
+    tmp.erase(1,1);
+    dfs(tmp);
+}
 
 void solve(int tc){
-    DFOR(10,0)cout<<i<<endl;
+    int n;
+    string ss;
+    cin>>n>>ss;
+    dfs(ss);
+    cout<<ans.size()<<endl;
+    ans.clear();
     
 }
 
@@ -52,11 +70,11 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
