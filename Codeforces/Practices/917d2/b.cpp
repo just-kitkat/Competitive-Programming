@@ -44,26 +44,15 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-unordered_set<string>ans;
-void dfs(string a){
-    if(a.size()<2||ans.count(a)){ans.insert(a);return;}
-    ans.insert(a);
-    string tmp=a;
-    tmp.erase(0,1);
-    dfs(tmp);
-    tmp=a;
-    tmp.erase(1,1);
-    dfs(tmp);
-}
 
 void solve(int tc){
-    int n;
-    string ss;
-    cin>>n>>ss;
-    dfs(ss);
-    cout<<ans.size()<<endl;
-    ans.clear();
-    
+    int n;cin>>n;
+    int ans=0;
+    string s;cin>>s;
+    FOR(0,n){
+        if(s[i]==s[i+1])ans++;
+        else ans+=2;
+    }cout<<ans<<endl;
 }
 
 int main(){

@@ -1,11 +1,11 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
 using namespace std;
 
-#define endl "\n"
+#define el "\n"
 #define arr array
 #define ll long long
 #define ld long double
@@ -13,6 +13,8 @@ using namespace std;
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
@@ -34,8 +36,8 @@ void no() { cout<<"NO\n"; }
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __log__ { FILE* file = freopen("../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../Testcases/test.in", "r", stdin); }
+#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
+#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -44,7 +46,20 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    cout<<INT_MAX<<endl;
+    int n;
+    map<char,int>m;
+    string s;
+    cin>>s;
+    FOR(0,s.size()){
+        m[s[i]]++;
+    }    
+    pair<char,int> freq = {'.',0};
+    for(auto x:m){
+        if (x.S>freq.S){
+            freq=x;
+        }
+    }
+    cout<<freq.F<<endl;
     
 }
 
@@ -52,8 +67,8 @@ int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__log__ // Redirect output to test.out
-    __input__ // Read test.in for input
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
 
     int tc = 1;
     //cin >> tc;
