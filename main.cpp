@@ -62,8 +62,9 @@ void solve(int tc){ //rabin-karp algo (string hashing)
         ll cur=(m+h[i+S]-h[i])%m;
         if(cur==(hs*ppow[i])%m)occ.pb(i);
     }
-    
+
     for(auto x:occ)cout<<x<<' ';cout<<el;
+    cout<<"Substrings: "<<occ.size()<<el;
 }
 
 int main(){
