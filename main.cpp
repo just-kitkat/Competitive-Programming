@@ -46,22 +46,23 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){ //rabin-karp algo (string hashing)
-    int n;
     string s="abbcc", t="aabbccghdabbccabbccv";
     const int p=31,m=1e9+9;
     int S=s.size(),T=t.size();
-    vll ppow(T);
-    ppow[0]=1;
+    vll ppow(T);ppow[0]=1;
     FOR(1,T)ppow[i]=(ppow[i-1]*p)%m;
+
     vll h(T+1);
     FOR(0,T)h[i+1]=(h[i]+(t[i]-'a'+1)*ppow[i])%m;
     long long hs=0;
     FOR(0,S)hs+=((s[i]-'a'+1)*(ppow[i]))%m;
+
     vi occ;
     FOR(0,T-S+1){
         ll cur=(m+h[i+S]-h[i])%m;
         if(cur==(hs*ppow[i])%m)occ.pb(i);
     }
+    
     for(auto x:occ)cout<<x<<' ';cout<<el;
 }
 
