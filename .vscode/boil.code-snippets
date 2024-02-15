@@ -116,6 +116,7 @@
 "",
 "	//__time__ //Runtime"
 "}",
+"// Note: int64_t for exactly 64 bit signed int"
 		]
 	}
 }
