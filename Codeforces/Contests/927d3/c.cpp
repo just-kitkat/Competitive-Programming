@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WA (37/100)
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,40 +46,34 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
-    cin>>n;
+    int n,m;
+    cin>>n>>m;    
     vi a(n);
-    bool allnotmult2=1;
-    FOR(0,n){
-        cin>>a[i];
-        if(!(a[i]&1))allnotmult2=0;
-        //if(i!=0 && a[i]!=a[i-1] || i==0)b.pb(a[i]);
+    ll pdt=1;
+    FOR(0,n){cin>>a[i];pdt*=a[i];}
+    int l=0,r=n-1;
+    string s;cin>>s;
+    if(n==1){
+        cout<<a[0]%m<<el;return;
     }
-    if(allnotmult2){
-        set<int> s;
-        vi ans;
-        for(auto x:a){
-            s.insert(x);
-            ans.pb(s.size());
-        }
-        for(auto x:ans)cout<<x<<' ';cout<<el;
-        return;
-    }
-    set<int> s;
+    //s.pop_back();
     vi ans;
-    for(auto x:a){
-        s.insert(x);
-        int prev=-10,cur=0;
-        for(auto e:s){
-            if(e>prev+1){
-                cur+=1;
-                prev=e;
-                }
-        }
-        ans.pb(cur);
+    for(auto x:s){
+        if (x=='L'){ans.pb(a[l]);l++;}
+        else {ans.pb(a[r]);r--;}
     }
-    for(auto x:ans)cout<<x<<' ';cout<<el;
-    
+    //for(auto x:ans)cout<<x<<' ';cout<<el;
+    reverse(all(ans));
+    vi anss;
+    for(auto x:ans){
+        if(anss.size()==0){
+            anss.pb(ans[0]%m);
+            continue;
+        }
+        anss.pb((anss.back()*x)%m);
+    }
+    reverse(all(anss));
+    for(auto x:anss)cout<<x<<' ';cout<<el;
 }
 
 int main(){
@@ -90,7 +84,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

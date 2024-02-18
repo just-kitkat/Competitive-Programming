@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WA (37/100)
+// Status: WIP
 
 #include <bits/stdc++.h>
 
@@ -48,37 +48,16 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 void solve(int tc){
     int n;
     cin>>n;
-    vi a(n);
-    bool allnotmult2=1;
-    FOR(0,n){
-        cin>>a[i];
-        if(!(a[i]&1))allnotmult2=0;
-        //if(i!=0 && a[i]!=a[i-1] || i==0)b.pb(a[i]);
-    }
-    if(allnotmult2){
-        set<int> s;
-        vi ans;
-        for(auto x:a){
-            s.insert(x);
-            ans.pb(s.size());
-        }
-        for(auto x:ans)cout<<x<<' ';cout<<el;
-        return;
-    }
-    set<int> s;
-    vi ans;
+    vector<char> a(n);
+    FOR(0,n)cin>>a[i];
+    int ans=0;
+    char prev='.';
     for(auto x:a){
-        s.insert(x);
-        int prev=-10,cur=0;
-        for(auto e:s){
-            if(e>prev+1){
-                cur+=1;
-                prev=e;
-                }
-        }
-        ans.pb(cur);
+        if(x=='@')ans++;
+        else if(prev==x&&x=='*')break;
+        prev=x;
     }
-    for(auto x:ans)cout<<x<<' ';cout<<el;
+    cout<<ans<<el;
     
 }
 
@@ -90,7 +69,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

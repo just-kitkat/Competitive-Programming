@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WA (37/100)
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -48,39 +48,39 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 void solve(int tc){
     int n;
     cin>>n;
-    vi a(n);
-    bool allnotmult2=1;
-    FOR(0,n){
-        cin>>a[i];
-        if(!(a[i]&1))allnotmult2=0;
-        //if(i!=0 && a[i]!=a[i-1] || i==0)b.pb(a[i]);
+    vll a(n);
+    FOR(0,n)cin>>a[i];
+    ll prev=a[0];
+    ll cur=prev;
+    FOR(1,n){
+        cur=a[i];
+        while(cur<=prev)cur+=a[i];
+        //cout<<cur<<el;
+        prev=cur;
     }
-    if(allnotmult2){
-        set<int> s;
-        vi ans;
-        for(auto x:a){
-            s.insert(x);
-            ans.pb(s.size());
-        }
-        for(auto x:ans)cout<<x<<' ';cout<<el;
-        return;
-    }
-    set<int> s;
-    vi ans;
-    for(auto x:a){
-        s.insert(x);
-        int prev=-10,cur=0;
-        for(auto e:s){
-            if(e>prev+1){
-                cur+=1;
-                prev=e;
-                }
-        }
-        ans.pb(cur);
-    }
-    for(auto x:ans)cout<<x<<' ';cout<<el;
+    cout<<cur<<el;
+    /*ll prev=a[0];
+    FOR(1,n){
+        if(a[i]>prev){prev=a[i];continue;}
+        ld x=(ld)prev/a[i];
+        //cout<<x<<el;
+        if(x<1)x=1;
+        //else if(ceil(fmod(x,1)==0)x+=0.1;
+        else if(x==1)x=2;
+        x=(ll)ceil(x);
+        if(a[i]==1)x=prev+1;
+        prev=x*a[i];
+        //cout<<prev<<el;
+    } 
+    cout<<prev<<el;*/
     
 }
+/*
+1
+5
+7 3 13 11 17
+
+*/
 
 int main(){
     ios_base::sync_with_stdio(0);
@@ -90,7 +90,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
