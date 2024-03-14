@@ -1,14 +1,9 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <iostream>
+
 using namespace std;
-using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -50,14 +45,50 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void solve(int tc){
+    int n,q;
+    cin>>n>>q;    
+    vector<vll> c={{0,0,0}};
+    FOR(0,n){
+        int x;cin>>x;
+        c.pb({c.back()[0]+(x==1),(ll)c.back()[1]+(x!=1)*x,c.back()[2]+(x!=1)});
+    }
+    FOR(0,q){
+        //pref sum{num of 1, num of 2}
+        int a,b;cin>>a>>b;
+        a--;
+        ll num1=c[b][0]-c[a][0], num2=c[b][1]-c[a][1], num3=c[b][2]-c[a][2];
+        // cout<<num1<<' '<<num2<<el;
+        if(num1+num2 - num3 < num1*2 || a+1==b || num1==b-a)cout<<"NO\n";else cout<<"YES\n";
+    }
+    
+}
+/*
+1
+12 6
+5 5 1 1 1 1 1 1 1 1 1 1
+1 12
+1 5
+2 6
+2 7
+2 8
+2 9
+*/
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

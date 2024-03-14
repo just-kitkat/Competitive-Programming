@@ -2,13 +2,8 @@
 // Status: WIP
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <iostream>
+
 using namespace std;
-using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -50,14 +45,47 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void solve(int tc){
+    int n,m,q;cin>>n>>m>>q;
+    //machine, task, safety
+    vi l(m),r(m);vll s(q);
+    FOR(0,m)cin>>l[i]>>r[i];
+    FOR(0,q)cin>>s[i];
+    map<int, int> lastAccessed;
+    vll occ;
+    ll ind=0;
+    FOR(0,m){
+        JFOR(l[i],r[i]+1){
+            occ.pb(lastAccessed.count(j)==0?-1:ind-lastAccessed[j]-1);
+            lastAccessed[j]=ind;
+            ind++;
+        }
+    }
+
+    // for(auto x:occ)cout<<x<<' ';cout<<el;
+    vll ans;
+    FOR(0,q){
+        ans.pb(0);
+        for(auto x:occ)ans.back()+=(x>=s[i]);
+    }
+    for(auto x:ans)cout<<x<<' ';cout<<el;
+    
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    //cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

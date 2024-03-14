@@ -2,13 +2,8 @@
 // Status: WIP
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <iostream>
+
 using namespace std;
-using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -31,6 +26,7 @@ less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 #define FOR(a,b) for(auto i=a;i<b;++i)
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
+#define ZFOR(a,b) for(auto z=a;z<b;++z)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
@@ -50,14 +46,68 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void solve(int tc){
+    int n,k;cin>>n>>k;
+    if(k==1){
+        vii a(n);
+        FOR(0,n)cin>>a[i].F;
+        FOR(0,n)cin>>a[i].S;
+        sort(all(a));
+        ll ans=0;
+        ll b=0;
+        FOR(0,n){
+            if(b<a[i].F)break;
+            b+=a[i].S;
+            ans++;
+        }
+        cout<<ans<<el;
+        return;
+    }
+    vector<vi> r(n,vi(k)), u(n,vi(k));
+    FOR(0,n)JFOR(0,k)cin>>r[i][j];
+    FOR(0,n)JFOR(0,k)cin>>u[i][j];
+    set<int> done;
+    vll mine(k,0);
+    ll ans=0;
+    vll prev(k,-1);
+    while(mine!=prev){
+        prev=mine;
+        FOR(0,n){
+            if(done.count(i))continue;
+            bool poss=1;
+            JFOR(0,k){
+                if(r[i][j]>mine[j]){
+                    poss=0;
+                    break;
+                }
+            }
+            if(poss){
+                ZFOR(0,k){
+                    mine[z]+=u[i][z];
+                }
+                ans++;
+                done.insert(i);
+            }
+            // cout<<ans<<' '<<i<<el;
+        }
+    }
+    cout<<ans<<el;
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    //cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

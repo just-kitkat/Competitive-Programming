@@ -1,5 +1,6 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
+// Note: Actual solution uses 2 pq where pqx.top() is the middle
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -7,8 +8,7 @@
 #include <iostream>
 using namespace std;
 using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+template <class T> using multi_ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag,tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -50,14 +50,44 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void solve(int tc){
+    int n;
+    cin>>n;
+    multi_ordered_set<int> a;
+    vi ans;
+    FOR(0,n){
+        string s;
+        cin>>s;
+        if(s=="PUSH"){
+            int x;
+            cin>>x;
+            a.insert(x);
+        }else{
+            int sz=a.size();
+            auto x=a.find_by_order(sz&1?sz/2:sz/2-1);
+            a.erase(x);
+        }
+
+        // for(auto x:a)cout<<x<<' ';cout<<el;
+    }
+    for(auto x:a)cout<<x<<' ';cout<<el;
+    
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    //cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

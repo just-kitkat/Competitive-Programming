@@ -1,14 +1,9 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <iostream>
+
 using namespace std;
-using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -50,14 +45,59 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void solve(int tc){
+    int n,k;cin>>n>>k;
+    vii a(n);
+    FOR(0,n){
+        int x;cin>>x;a[i].S=x;
+    }
+    FOR(0,n){
+        int x;cin>>x;a[i].F=abs(x);
+    }
+    sort(all(a));
+    int inc=0;
+    bool ans=1;
+    int front=0;
+    bool done=0;
+    while(front<n){
+        int b=k;
+        while(b>0){
+            if(a[front].F-inc <= 0){ans=0;break;}
+            else if(b>=a[front].S){
+                b-=a[front].S;
+                front++;
+                if(front>=n){done=1;break;}
+            }
+            else{
+                a[front].S-=b;
+                b=0;
+            }
+        }
+        if(done)break;
+        if(a[front].F-inc <= 0)ans=0;
+        if(!ans)break;
+        inc++;
+        // cout<<front<<' '<<inc<<' '<<a[front].S<<el;
+    }
+    cout<<(ans?"YES":"NO")<<el;
+
+    
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

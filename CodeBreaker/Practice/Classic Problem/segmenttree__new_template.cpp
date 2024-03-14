@@ -1,14 +1,9 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#include <iostream>
+
 using namespace std;
-using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define el "\n"
 #define arr array
@@ -49,15 +44,56 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+const int N = 1e5;  // limit for array size
+ll n;  // array size
+ll t[2 * N]={0};
 
-int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+void build() {  // build the tree
+  for (int i = n - 1; i > 0; --i) t[i] = min(t[i<<1], t[i<<1|1]);
+}
+
+void modify(int p, ll value) {  // set value at position p
+  for (t[p += n] = value; p > 1; p >>= 1) t[p>>1] = min(t[p], t[p^1]);
+}
+
+int query(int l, int r) { 
+  ll res = LLONG_MAX;
+  for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+    if (l&1) res = min(res,t[l++]);
+    if (r&1) res = min(res,t[--r]);
+  }
+  return res;
+}
+
+void solve(int tc){
+    int q;
+    cin>>n>>q;
+    build();
+
+    FOR(0,q){
+        int a,b,c;
+        cin>>a>>b>>c;
+        //1 update, 2 min query
+        if(a==1)modify(b,c);
+        else cout<<query(b,c+1)<<el;
+    }
+    
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    //__output__ // Redirect output to test.out
+    //__input__ // Read test.in for input
+
+    int tc = 1;
+    //cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
+
+    //__time__ //Runtime
 }
 // Note: int64_t for exactly 64 bit signed int

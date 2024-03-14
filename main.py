@@ -79,3 +79,29 @@ def calculate_parity(data, parity):
 
 print(calculate_parity("0110101", "odd"))
 print(calculate_parity("0110101", "even"))
+
+age = 0
+height = float(0)
+rejected = 0
+accepted = 0
+age = int(input("Please enter your age ")) #1
+height = float(input("Please enter your height "))
+priSch=input("Are you studying in a primary school ? Y/N ") #2
+while age != 0 or height != 0: #3
+    if age >= 7 or priSch in ['Y', 'y'] or height <= 0.9 : #4, 5
+        print("You are not eligible to apply")
+        if age >=7:
+            print("because you are 7 years old or more")
+        if priSch in ['Y', 'y']: #6
+            print("because you are in a primary school")
+        if height <= 0.9: #7
+            print("because your height is 0.9 metres or below")
+        rejected = rejected + 1
+    else:
+        accepted = accepted + 1
+        print("You can apply for the card")
+    height = float(input("Please enter your height "))
+    age = int(input("Please enter your age ")) #10
+    priSch=input("Are you studying in a primary school ? Y/N ")
+    print(accepted, "application(s) eligible to apply") #8
+    print(rejected, "application(s) rejected ") #9
