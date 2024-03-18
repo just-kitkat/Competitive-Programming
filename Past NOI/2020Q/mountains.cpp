@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: WA (36/100)
 
 #include <bits/stdc++.h>
 
@@ -48,14 +48,23 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 void solve(int tc){
     int n;
     cin>>n;
-    vll a(n);
-    FOR(0,n)cin>>a[i];
-    set<ll> s;
-    for(auto x:a){
-        auto tmp=s.lower_bound(x);
-        if(tmp!=s.end())
-        s.insert(x);
+    vector<ll> a(n);
+    multiset<ll> l,r;
+    FOR(0,n){cin>>a[i];if(i)r.insert(-a[i]);}
+    l.insert(-a[0]);
+    ll ans=0;
+    FOR(1,n-1){
+        r.erase(r.find(-a[i]));
+        auto x=upper_bound(all(l),-a[i]);
+        auto y=upper_bound(all(r),-a[i]);
+        // cout<<"ITER "<<i<<": "<<(distance(x,l.end()))<<' '<<(distance(y,r.end()))<<el;
+        // for(auto s:l)cout<<s<<' ';cout<<el;
+        // for(auto s:r)cout<<s<<' ';cout<<el;
+        ans+=(distance(x,l.end()))*(distance(y,r.end()));
+        l.insert(-a[i]);
+
     }
+    cout<<ans<<el;
     
 }
 
@@ -67,7 +76,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

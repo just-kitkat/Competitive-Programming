@@ -7,9 +7,8 @@
 #include <iostream>
 using namespace std;
 using namespace __gnu_pbds;
-template <class T> using ordered_set = tree<T, null_type,
-less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
+typedef tree<pair<int, int>, null_type, less<pair<int, int> >,
+rb_tree_tag, tree_order_statistics_node_update> ordered_map;
 #define el "\n"
 #define arr array
 #define ll long long
@@ -51,13 +50,38 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 int main() {
-    ordered_set <int> a;
-    a.insert(2); //2 3 4 5 7
-    a.insert(4);
-    a.insert(3);
-    a.insert(7);
-    a.insert(5);
-    cout << *a.find_by_order(3) << endl; //output is 5
-    cout << (a.order_of_key(10)) << endl; //output is 5
+    ordered_map om;
+ 
+    om.insert({ 23, 20 });
+    om.insert({ 23, 10 });
+    om.insert({ 23, 30 });
+    om.insert({ 12, 35 });
+    om.insert({ 12, 22 });
+ 
+    // Another method to insert pair
+    // om.insert(make_pair(23, 20));
+ 
+    // Print the contents of the map
+    cout << "Contents of map:\n";
+    cout << "KEY\tELEMENT\n";
+    for (auto x:om) {
+        cout << x.F << "\t" << x.S << "\n";
+    }
+ 
+    // value at 3rd index in sorted array.
+    cout << "The value at 3rd index is "
+         << "{" << om.find_by_order(3)->first << ", "
+         << om.find_by_order(3)->second << "}\n";
+ 
+    // Index of pair {23, 30}
+    cout << "The index of pair {23, 30} is "
+         << om.order_of_key({ 23, 30 }) << endl;
+ 
+    // Pair {23, 40} is not in the map but it will show the
+    // index number if it was there in sorted array
+    cout << "The index of pair {23, 40} is "
+         << om.order_of_key({ 23, 40 }) << endl;
+ 
+    return 0;
 }
 // Note: int64_t for exactly 64 bit signed int
