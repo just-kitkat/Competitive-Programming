@@ -44,13 +44,16 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-
-void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+int tb(int number)
+{
+	int dv;
+	while(number!=0){
+		dv=number%10;
+		if(dv>1)
+			return 0;
+		number=number/10;
+	}
+	return 1;
 }
 
 int main(){
@@ -60,11 +63,74 @@ int main(){
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input
 
+    vector<bool> s((int)(1e5+10),false);
+    s[0]=1;
+    s[1]=1;
+    // vi a={10,11,101,110,111,1000,1001,1010,1011,1100,1101,1110,1111};
+    // vi aa;
+    vector<int>b={
+        0,1,
+        10,11,100,101,110,111,1000,1001,1010,1011,1100,1101,1110,1111,10000,
+        10001,10010,10011,10100,10101,10110,10111,11000,11001,11010,11011,
+        11100,11101,11110,11111,100000,
+
+        10*10,
+        10*11,
+        11*11,
+        10*10*10,10*10*11,10*11*11,11*11*11,
+        10*10*10*11,10*10*11*11,10*11*11*11,11*11*11*11,
+        101*11,101*11*11,
+        110*11,110*11*11,110*101,111*111,110*110,101*101,100*100,
+        111*11,111*11*11,111*101,111*111,111*110,
+        1001*11,
+        1010*11,
+        1011*11,1100*11,1101*11,1110*11,1111*11,10201
+
+    };
+    // vi a={10,11};
+    // int p1=0,p2=0;
+    // while(p2<16){//a.back()<1e6+1){
+    //     // FOR(0,a.size()){
+    //     //     JFOR(i,a.size()){
+    //     //         a.pb(a[i]*a[j]);
+    //     //     }
+    //     // }
+    //     // for(auto x:a)cout<<x<<' ';cout<<endl;
+    //     int xx=a[p1]*a[p2];
+    //     if(xx>1e5+1)continue;
+    //     a.pb(xx);
+    //     if(tb(xx))a.pb(xx+1);
+    //     if(p1==p2){
+    //         p2+=1;
+    //         p1=0;
+    //     }else{
+    //         p1++;
+    //     }
+        
+    // }
+    for(auto x:b){if(x<((int)(1e5+10)))s[x]=1;}
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
-        solve(t);
+        // int n;
+        // cin>>n;
+        // vi a={1,10*10*11,11*11*10,11*121, 10*1111,111*11,
+        // 12210,};
+        string nn;
+        cin>>nn;
+        int c=0;
+        DFOR(nn.size()-1,0){
+            if(nn[i]!='0')break;
+            c++;
+        }
+        int n=stoi(nn);
+        n/=pow(10,c);
+        if(s[n])cout<<"YES\n";
+        else cout<<"NO\n";
+        // sort(all(a));
+        // for(auto x:a)cout<<x<<' ';cout<<endl;
+
     }
 
     //__time__ //Runtime

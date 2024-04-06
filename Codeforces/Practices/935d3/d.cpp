@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -48,9 +48,37 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 void solve(int tc){
     int n,m;
     cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    vii a(n);
+    FOR(0,n)cin>>a[i].F;
+    FOR(0,n)cin>>a[i].S;
+    ll ans=0,cur=0;
+    ll ch;
+    DFOR(n-1,0){
+        ch=min(a[i].F,a[i].S);
+        if(i+1==m){ans+=a[i].F;cur=ans;}
+        else if(i<m){
+            cur=cur-a[i+1].F+a[i+1].S+a[i].F;
+            ans=min(ans,cur);
+        }
+        else ans+=ch;
+        // prev=ch;
+        // cout<<i<<' '<<ans<<el;
+    }
+    cout<<ans<<el;
+/*
+6 2
+6 9 7 1 8 3
+5 8 8 1 4 1
+
+i=5, ans=1
+4 5
+3 6
+2 13
+1 22
+0 22-9+8+6
+
+*/
+    
 }
 
 int main(){
@@ -61,7 +89,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,22 +46,39 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n;cin>>n;
+    int l=0,r=0;
+    string a;cin>>a;
+    FOR(0,n)r+=a[i]=='1';
+    int ans=INT_MAX,c=-1;int n,k;
+    cin>>n>>k;
+    if(k>=n-1)cout<<1<<el;else cout<<n<<el;    
+    
+    FOR(0,n+1){
+        if(l>=(i+1)/2 && r>=(n-i+1)/2){
+            int x=abs((n+1)/2-i);
+            if(n&1&&x==0)x=1;
+            if(x<ans){
+                c=i;
+                ans=abs(x);}
+        }
+        if(i!=n){l+=a[i]=='0';
+        r-=a[i]=='1';}
+    }
+    if(ans==INT_MAX){cout<<-1<<el;return;}
+    cout<<c<<el;
+    
 }
 
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0); cout.tie(0);
 
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

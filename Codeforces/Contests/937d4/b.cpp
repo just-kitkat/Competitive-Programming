@@ -46,11 +46,31 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n;
+    cin>>n;
+    int nn=n;
+    string a="##",b="..";
+    vector<string> res;
+    res.pb("");
+    bool cur=1;
+    while(n--){
+        res[0]+=(cur?a:b);
+        cur=!cur;
+    }  
+    cur=0;
+    res.pb(res[0]);
+    int count=2;
+    FOR(0,2*nn-2){
+        if(count==2){count=0;cur=!cur;
+        res.pb(res.back().substr(2,res[0].size()-2)+(res.back().back()=='#'?b:a));}
+        else res.pb(res.back());
+        count += 1;
+        // cur=!cur;
+    }
+    FOR(0,res.size()){
+        cout<<res[i]<<el;
+    }//cout<<el;
+    
 }
 
 int main(){
@@ -61,7 +81,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

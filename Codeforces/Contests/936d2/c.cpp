@@ -43,25 +43,44 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+map<int,vi>a;
+int cnt=0;
 
+int dfs(int v, int u, int sz, int x){
+    if(a[v].size()==1)return 1;
+    for(auto x:a[v]){
+        if(x==u)continue;
+        dfs(x,v,sz+1,x);
+    }
+}
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n,k;cin>>n>>k;
+    FOR(0,n-1){
+        int v,u;
+        cin>>v>>u;
+        a[v].pb(u);
+        a[u].pb(v);
+    }
+    int lo=1,hi=n+1;
+    while(lo<hi){
+        int mid=lo+(hi-lo)/2;
+        cnt=0;//num components
+        dfs(1,1,0,mid);
+    }
+
+    
 }
 
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0); cout.tie(0);
 
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

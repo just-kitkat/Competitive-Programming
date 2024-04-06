@@ -44,13 +44,64 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-
+vi d(int n) 
+{ 
+    vi res;
+    // Note that this loop runs till square root 
+    for (int i=1; i<=sqrt(n); i++) 
+    { 
+        if (n%i == 0) 
+        { 
+            // divisors are equal
+            if (n/i == i) 
+                // cout <<" "<< i;
+                res.pb(i); 
+  
+            else // Otherwise both
+                res.pb(i);
+                res.pb(n/i);
+                // cout << " "<< i << " " << n/i; 
+        } 
+    } 
+    return res;
+} 
+  
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n;
+    cin>>n;
+    string l;
+    cin>>l;
+
+    vi a=d(n);
+    sort(all(a));
+    int ans=n;
+    for(auto x:a){
+        int inval=0;
+        string s=l.substr(0,x);
+        string r="";
+        FOR(0,n/x)r+=s;
+        bool f=1;
+        FOR(0,n){
+            if(r[i]!=l[i])inval++;
+            if(inval>1){f=0;}
+        }
+        if(f){ans=min(ans,x);break;}
+    }
+    for(auto x:a){
+        if(x>n/2)break;
+        int inval=0;
+        string s=l.substr(x,x);
+        string r="";
+        FOR(0,n/x)r+=s;
+        bool f=1;
+        FOR(0,n){
+            if(r[i]!=l[i])inval++;
+            if(inval>1){f=0;}
+        }
+        if(f){ans=min(ans,x);break;}
+    }
+    cout<<ans<<el;
+    
 }
 
 int main(){
@@ -61,7 +112,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

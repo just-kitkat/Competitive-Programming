@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -43,14 +43,47 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+const int m=1e9+7;
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n;
+    int k;cin>>n>>k;
+    vi a(n);
+    bool all_neg=1;
+    pll ls={0,0};
+    // pll sum={0,0};
+    ll sum=0;
+    pll prev={0,0};
+    FOR(0,n){
+        cin>>a[i];
+        // sum.S+=a[i];
+        // sum.F+=sum.F/m;
+        // sum.S%=m;
+        sum+=a[i];
+        sum%=m;
+        pll c=prev;c.S+=a[i];
+        c.F+=c.S/m;
+        c.S%=m;
+        
+        prev=max(mp(0LL,0LL),c);
+        ls=max(ls,prev);
+        if(a[i]>0)all_neg=0;
+    }    
+    if(all_neg){cout<<(sum+m)%m<<el;return;}
+    //ls longest subarray
+    sum-=ls.S;
+    sum=(sum+m)%m;
+    
+    FOR(0,k){
+        ls.S*=2;
+        ls.S%=m;
+    }
+    cout<<(sum+ls.S+m)%m<<el;
+    /*
+9 10
+1000000000 1000000000 -1000000000 -1000000000 -1000000000 1000000000 1000000000 1000000000 1000000000
+
+    */
 }
 
 int main(){
@@ -61,7 +94,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

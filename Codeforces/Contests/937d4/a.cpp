@@ -46,11 +46,12 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int a,b,c;
+    cin>>a>>b>>c;
+    if(a<b&&b<c)cout<<"STAIR\n";
+    else if(a<b&&b>c)cout<<"PEAK\n";
+    else cout<<"NONE\n";    
+    
 }
 
 int main(){
@@ -61,7 +62,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

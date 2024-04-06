@@ -1,13 +1,13 @@
 import subprocess
 
 INFO = {
-    "f": "Practices\\", # Practices / Contests
-    "cat": "640d4\\", # <num>d<div>
-    "qn": "a", # a / b / c / d / e / f / g / h ...
-    "ext": ".cpp", # .py / .cpp / .java / .c
-    "sout": "c:\\Users\\HP\\Documents\\Python\\Codeforces\\Testcases\\sample.out",
-    "tin": "c:\\Users\\HP\\Documents\\Python\\Codeforces\\Testcases\\test.in",
-    "tout": "c:\\Users\\HP\\Documents\\Python\\Codeforces\\Testcases\\test.out",
+    "f": "Contests\\", # Practices / Contests
+    "cat": "937d4\\", # <num>d<div>
+    "qn": "c", # a / b / c / d / e / f / g / h ...
+    "ext": ".py", # .py / .cpp / .java / .c
+    "sout": "./Testcases\\sample.out",
+    "tin": "./Testcases\\test.in",
+    "tout": "./Testcases\\test.out",
 }
 
 def main():

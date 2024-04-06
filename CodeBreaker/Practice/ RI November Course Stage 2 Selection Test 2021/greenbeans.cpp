@@ -46,11 +46,37 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n,m;
-    cin>>n>>m;
-    int a=0;
-    FOR(0,n)JFOR(0,m){int c;cin>>c;a=max(a,c);}
-    cout<<a<<el;
+    int n;
+    cin>>n;
+    vll a(n);
+    FOR(0,n)cin>>a[i];
+    vll diff(n-1);
+    FOR(0,n-1)diff[i]=a[i+1]-a[i];
+    int info=0;
+    if(diff[0]==diff[1]&&diff[1]==diff[2]){
+        info=3;
+        FOR(3,n-1){
+            if(diff[i]!=diff[i-1]){
+                info=i+1;
+                break;
+            }
+        }
+    }
+    else if(diff[0]==diff[1])info=3;
+    else if(diff[0]!=diff[1]&&diff[1]!=diff[2]){
+        if(n==3)info=0;
+        if(diff[0]!=diff[2]){
+            if(diff[0]>diff[1]&&diff[0]<diff[2]||
+               diff[0]<diff[1]&&diff[0]>diff[2])info=2;
+            else info=1;
+        }
+        else if(n>3&&diff[2]==diff[3])info=0;
+        else info=2;
+    }
+    else if(diff[0]==diff[1])info=2;
+    else info=0;
+    cout<<info+1<<el;
+    // for(auto x:diff)cout<<x<<' ';cout<<el;
 }
 
 int main(){
