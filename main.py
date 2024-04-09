@@ -1,27 +1,22 @@
-def flatten(lst):
-    """
-    Flattens a list using recursion
+# Author: JustKitkat
+# Status: WIP
 
-    Arguments
-    --------------
-    lst: Any
+inp=input
+inf=float('inf')
 
-    Return
-    --------------
-    Any
-    """
-    if type(lst)!=list:
-        return lst
-    res = []
-    for i in lst:
-        x = flatten(i)
-        if type(x) == list:
-            res.extend(x)
-        else:
-            res.extend([x])
-    return res
+def sin(): return [i for i in inp().split()]
+def iin(): return [int(i) for i in inp().split()]
+def fin(): return [float(i) for i in inp().split()]
+def iinp(): return int(inp())
+def finp(): return float(inp())
 
-testcase = [
-    1, 2, 3, [4, [5, 6, 7], 8], [9, "9"], "10"
-]
-print(flatten(testcase))
+def solve(tc):
+    print(tc)
+
+def main():
+    tc = 1
+    # tc = iinp()
+    for i in range(1, tc + 1): # Testcases
+        solve(i)
+
+main()
