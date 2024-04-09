@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,17 +46,11 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,a,b;
+    cin>>n>>a>>b;
+    cout<<min(a*n,(n/2)*b+((n&1)?a:0))<<el;
+    
 }
-/*
-1
-5 7
-3 2 1 1 3
-
-1
-5 10
-1 1 5 1 1
-*/
 
 int main(){
     ios_base::sync_with_stdio(0);

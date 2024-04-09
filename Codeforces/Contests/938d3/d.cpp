@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,7 +46,43 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,m,k;
+    cin>>n>>m>>k;
+    vi a(n),b(m);
+    FOR(0,n)cin>>a[i];
+    FOR(0,m)cin>>b[i];
+    int positive=0;
+    map<int,int>ma,freq;
+    for(auto x:b){
+        ma[x]=0;
+    }
+    for(auto x:b)freq[x]++;
+    int p1=0,p2=m-1;
+    FOR(0,m){
+        if(ma.count(a[i])){
+            ma[a[i]]++;
+            if(ma[a[i]]<=freq[a[i]])positive++;
+        }
+    }
+    int ans=positive>=k;
+    while(p2<n-1){
+        // cout<<p1<<' '<<p2<<' '<<a[p2+1]<<endl;
+        if(ma.count(a[p1])){
+            // cout<<"c"<<endl;
+            ma[a[p1]]--;
+            if(ma[a[p1]]<freq[a[p1]])positive--;
+        }
+        p1++;
+        p2++;
+        if(ma.count(a[p2])){
+            // cout<<"d"<<endl;
+            ma[a[p2]]++;
+            if(ma[a[p2]]<=freq[a[p2]])positive++;
+        }
+        ans+=positive>=k;
+    }
+    cout<<ans<<el;
+
 }
 /*
 1

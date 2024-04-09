@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -47,16 +47,17 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 void solve(int tc){
     int n;
+    cin>>n;
+    unordered_set<string> s;
+    FOR(0,n){
+        string a,b;
+        cin>>a>>b;
+        string c=a+","+b;
+        if(s.count(c)){cout<<"NO\n";}
+        else {s.insert(c);cout<<"YES\n";}
+    }    
+    
 }
-/*
-1
-5 7
-3 2 1 1 3
-
-1
-5 10
-1 1 5 1 1
-*/
 
 int main(){
     ios_base::sync_with_stdio(0);
@@ -66,7 +67,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

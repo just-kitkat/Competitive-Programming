@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,7 +46,39 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n;ll k;
+    cin>>n>>k;
+    vi a(n);
+    FOR(0,n)cin>>a[i];
+    if(n==1){
+        if(k>=a[0])cout<<1<<el;
+        else cout<<0<<el;
+        return;
+    }
+    ll mid=k/2;
+    int ans=0;
+    ll mod=mid;
+    if(k&1)mod+=1;
+    int p=-1;
+    FOR(0,n){
+        mod-=a[i];
+        // cout<<"D: "<<mod<<el;
+        if(mod<0){
+            mod+=a[i];
+            a[i]-=mod;    
+            break;
+        }
+        ans++;
+        p=i;
+    }
+    mod=mid;
+    // cout<<p<<' '<<ans<<el;
+    if(p<n-1)DFOR(n-1,p+1){
+        mod-=a[i];
+        if(mod<0)break;
+        ans++;
+    }
+    cout<<ans<<el;
 }
 /*
 1

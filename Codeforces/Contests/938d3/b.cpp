@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -46,17 +46,47 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,c,d;
+    cin>>n>>c>>d;
+    map<int,int> a;
+    int mm=INT_MAX;
+    FOR(0,n*n){int tmp;cin>>tmp;mm=min(mm,tmp);a[tmp]++;}
+    int cur=mm;
+    a[cur]--;
+    FOR(0,n){
+        // cout<<"DEBUG: "<<cur<<el;
+        int cc=cur;
+        JFOR(1,n){
+            cc+=d;
+            // cout<<"DEBUG: "<<cc<<", "<<a[cc]<<el;
+            a[cc]--;
+            if(a[cc]<0){cout<<"NO\n";return;}
+        }
+        if(i==n-1)break;
+        cur+=c;
+        a[cur]--;
+        if(a[cur]<0){cout<<"NO\n";return;}
+    }
+    cout<<"YES\n";
+    // 3 9 6 5 7 1 10 4 8
+    // 1 3 4 5 6 7 8 9 10
+    // 1 4 7
+    // 3 6 9
+    // 5 8 11
+    // sort(all(a));
+    // for(auto x:a)cout<<x<<' ';cout<<el;
+    // if(!(a[1]-a[0]==c&&a[2]-a[1]==d||a[1]-a[0]==d&&a[2]-a[1]==c)){
+    //     cout<<"NO\n";
+    //     return;
+    // }
+    // int prev=a[1]-a[0];
+    // FOR(1,n*n){
+    //     int diff=a[i]-a[i-1];
+    //     if(diff!=prev){cout<<"NO\n";return;}
+    //     if(prev==d)prev=c;else prev=d;
+    // }
+    // cout<<"YES\n";
 }
-/*
-1
-5 7
-3 2 1 1 3
-
-1
-5 10
-1 1 5 1 1
-*/
 
 int main(){
     ios_base::sync_with_stdio(0);
