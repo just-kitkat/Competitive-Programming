@@ -27,6 +27,9 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " => " << x << endl;
+#define show2(x,y) cerr << #x << " => " << x << " | " << #y << " => " << y << endl;
+#define show3(x,y,z) cerr << #x << " => " << x << " | " << #y << " => " << y << " | " << #z << " => " << z << endl;
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,17 +49,11 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n=36;
+    string s="hello world";
+    show(n);
+    
 }
-/*
-1
-5 7
-3 2 1 1 3
-
-1
-5 10
-1 1 5 1 1
-*/
 
 int main(){
     ios_base::sync_with_stdio(0);
