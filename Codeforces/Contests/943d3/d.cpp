@@ -18,7 +18,7 @@ using namespace std;
 #define mii map<int, int>
 #define si set<int>
 #define sc set<char>
-#define pb push_back
+// #define pb push_back
 #define mp make_pair
 #define F first
 #define S second
@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,18 +50,47 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,k,pb,ps;
+    cin>>n>>k>>pb>>ps;
+    int ops=ps,opb=pb;
+    vi p(n),a(n),visb(n),viss(n);
+    FOR(0,n)cin>>p[i];
+    FOR(0,n)cin>>a[i];
+    ps--,pb--;
+    visb[0]=a[pb];
+    viss[0]=a[ps];
+    FOR(1,n){
+        visb[i]=visb[i-1]+a[pb];
+        pb=p[pb]-1;
+        viss[i]=viss[i-1]+a[ps];
+        ps=p[ps]-1;
+    }
+    ll ansb=0,anss=0;
+    FOR(0,n){
+        ansb=max(ansb,(ll)visb[i]+a[pb]*(n-i));
+        anss=max(anss,(ll)viss[i]+a[ps]*(n-i));
+        ps=p[ps],pb=p[pb];
+    }
+    if(ansb>anss)cout<<"Bodya\n";
+    else if(anss==ansb)cout<<"Draw\n";
+    else cout<<"Sasha\n";
 }
+/*
+1
+3 8 1 3
+1 2 3
+2 4 6
+*/
 
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0); cout.tie(0);
 
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

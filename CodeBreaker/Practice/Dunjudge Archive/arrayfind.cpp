@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -47,8 +51,37 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 void solve(int tc){
     int n;
-}
+    cin>>n;
+    vi a(n);
+    FOR(0,n)cin>>a[i];
+    sort(all(a));
+    // for(auto x:a)cout<<x<<' ';cout<<el;
+    vi low(n),high(n);
+    FOR(1,n)if(a[i]!=a[i-1])low[i]=i;else low[i]=low[i-1];
+    DFOR(n-2,0)if(a[i]!=a[i+1])high[i]=n-i-1;else high[i]=high[i+1];
+    int q;
+    cin>>q;
+    FOR(0,q){
+        int x;cin>>x;
+        auto b=lower_bound(all(a),x)-a.begin();
+        bool in=binary_search(all(a),x);
+        // show(b);
+        if(b==0 and x!=a[0])cout<<"Smaller: 0, Greater: "<<n<<el;
+        else if(b==n and x!=a.back())cout<<"Smaller: "<<n<<", Greater: 0"<<el;
+        else if(!in)cout<<"Smaller: "<<min(n,low[b])<<", Greater: "<<max(0,high[b-1])<<el;
+        else cout<<"Smaller: "<<low[b]<<", Greater: "<<high[b]<<el;
+    }
 
+}
+/*
+1
+1
+3
+0
+1
+2
+
+*/
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
@@ -57,7 +90,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

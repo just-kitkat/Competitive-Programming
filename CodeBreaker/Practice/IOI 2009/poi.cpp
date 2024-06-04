@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,7 +50,41 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,t,p;
+    cin>>n>>t>>p;
+    vector<vi> a(n,vi(t));
+    vi solves(t);
+    vector<vi> b(n,vi(3));
+    FOR(0,n){
+        JFOR(0,t){
+            bool x;cin>>x;
+            a[i][j]=x;
+            solves[j]+=x;
+        }
+        b[i][2]=i+1;
+    }
+    // FOR(0,n)JFOR(0,t)cout<<a[i][j]<<(j==t-1?'\n':' ');
+    // for(auto x:solves)cout<<x<<' ';cout<<el;
+    FOR(0,n){
+        int solved=0;
+        JFOR(0,t){
+            b[i][0]+=(n-solves[j])*a[i][j];
+            solved+=a[i][j];
+        }
+        b[i][1]=solved;
+    }
+    sort(all(b), [](vi l, vi r){
+        if(l[0]!=r[0])return l[0]<r[0];
+        else if(l[1]!=r[1])return l[1]<r[1];
+        else return l[2]>r[2];
+    });
+    int r=n;
+    // FOR(0,n)JFOR(0,3)cout<<b[i][j]<<(j==2?'\n':' ');
+    for(auto x:b){
+        if(x[2]==p)cout<<x[0]<<' '<<r<<el;
+        r--;
+    }
+    
 }
 
 int main(){
@@ -57,7 +95,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

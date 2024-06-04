@@ -48,50 +48,22 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 void solve(int tc){
     int n,k;cin>>n>>k;
-    if(k==1){
-        vii a(n);
-        FOR(0,n)cin>>a[i].F;
-        FOR(0,n)cin>>a[i].S;
-        sort(all(a));
-        ll ans=0;
-        ll b=0;
-        FOR(0,n){
-            if(b<a[i].F)break;
-            b+=a[i].S;
-            ans++;
+    int ans=0;
+    vector<vii> r(n,vii(k));
+    vector<vi> u(n, vi(k));
+    vi pointer(k);
+    vi p(k);
+    FOR(0,n){
+        JFOR(0,k){
+            int x;
+            cin>>x;
+            r[i][j]={x,i};
         }
-        cout<<ans<<el;
-        return;
+        sort(all(r[i]));
     }
-    vector<vi> r(n,vi(k)), u(n,vi(k));
-    FOR(0,n)JFOR(0,k)cin>>r[i][j];
     FOR(0,n)JFOR(0,k)cin>>u[i][j];
-    set<int> done;
-    vll mine(k,0);
-    ll ans=0;
-    vll prev(k,-1);
-    while(mine!=prev){
-        prev=mine;
-        FOR(0,n){
-            if(done.count(i))continue;
-            bool poss=1;
-            JFOR(0,k){
-                if(r[i][j]>mine[j]){
-                    poss=0;
-                    break;
-                }
-            }
-            if(poss){
-                ZFOR(0,k){
-                    mine[z]+=u[i][z];
-                }
-                ans++;
-                done.insert(i);
-            }
-            // cout<<ans<<' '<<i<<el;
-        }
-    }
-    cout<<ans<<el;
+
+    
 }
 
 int main(){

@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -40,13 +44,56 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 #define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+// const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+unordered_map<string,ll>cost;
+unordered_map<int,vector<pair<int,ll>>> adj;
+bool visited[30]={0};
+
+struct Edge {
+    int a, b, cost;
+};
+
+int n, m, v;
+vector<Edge> edges;
+const ll INF = pow(10,16);
 
 void solve(int tc){
-    int n;
+    int l,n;cin>>l>>n;
+    string s;cin>>s;
+    FOR(0,n){
+        char x,y;ll c;
+        cin>>x>>y>>c;
+        int a=x-'a',b=y-'a';
+        Edge e=Edge();
+        e.a=a,e.b=b,e.cost=c;
+        edges.pb(e);
+    }
+    vector<vll> aa(26);
+    JFOR(0,26){
+        vector<ll> d(26, INF);
+        d[j] = 0;
+        for (int i = 0; i < 26; ++i)
+            for (Edge e : edges)
+                if (d[e.a] < INF)
+                    d[e.b] = min(d[e.b], d[e.a] + e.cost);
+        aa[j]=d;
+    }
+    int p1=0,p2=l-1;
+    ll ans=0;
+    while(p1<p2){
+        // try each letter
+        ll c=10e16;
+        int a=s[p1]-'a',b=s[p2]-'a';
+        JFOR(0,26){
+            c=min(c,aa[a][j]+aa[b][j]);
+        }
+        ans+=c;
+        p1++;p2--;
+    }
+    cout<<(ans>=INF?-1:ans)<<el;
 }
 
 int main(){
@@ -57,7 +104,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

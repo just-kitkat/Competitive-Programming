@@ -48,26 +48,65 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-
-void solve(int tc){
-    int n;
-    cin>>n;
+bool cmp(pii left, pii right){
+    return left.second < right.second;
 }
+
+int binarySearchLow(vector<int> a, int target){
+    int low = 0, high = a.size()-1;
+    while (low<high){
+        int mid = (low+high) / 2;
+        if (target <= a[mid]) high = mid - 1;
+        else low = mid + 1;
+    }
+    if (a[low] < target) return low;
+    return -1;
+}
+int binarySearchHigh(vector<int> a, int target){
+    int low = 0, high = a.size()-1;
+    while (low<high){
+        int mid = (low+high) / 2;
+        if (target < a[mid]) high = mid - 1;
+        else low = mid + 1;
+    }
+    if (a[low] < target) return low;
+    return -1;
+}
+
+void merge(int* arr1,int n1,int* arr2,int n2,int* input,int size){
+    int i = 0, j = 0, k = 0;
+    while(i<n1 && j<n2){
+        if(arr1[i] < arr2[j]) input[k++] = arr1[i++];
+        else input[k++] = arr2[j++];
+    }
+    while(i < n1) input[k++] = arr1[i++];
+    while(j < n2) input[k++] = arr2[j++];
+}
+
+
+void mergeSort(int input[], int size){
+    if(size == 1 || size == 0) return;
+    int n1 = size/2, n2 = size - n1;
+    int* arr1 = new int[n1];
+    int* arr2 = new int[n2];
+    for(int i=0;i<n1;i++) arr1[i] = input[i];
+    int k=0;
+    for(int j=n1;j<size;j++) arr2[k++] = input[j];
+    
+    mergeSort(arr1,n1);
+    mergeSort(arr2,n2);
+    merge(arr1,n1,arr2,n2,input,size);
+ }
+
+bool defaultCmp(int left, int right){ return left < right; }
 
 int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
-
-    //__output__ // Redirect output to test.out
-    //__input__ // Read test.in for input
-
-    int tc = 1;
-    // cin >> tc;
-    for (int t = 1; t <= tc; t++) {
-        // cout << "Case #" << t << ": ";
-        solve(t);
+    // int arr[]={2,5,3,2,1,5,7,9,6,3};
+    // sort(arr, arr+10, defaultCmp);
+    int a[3]={100,102,104};
+    for(int i=0;i<3;i++){
+        cout<<(char)a[i]<<"\n";
     }
-
-    //__time__ //Runtime
+    return 0;
 }
-// Note: int64_t for exactly 64 bit signed int
+// +3 -5 -10 +30 +5 +5 = 28

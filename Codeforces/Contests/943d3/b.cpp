@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,7 +50,19 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,m;cin>>n>>m;
+    string a,b;
+    cin>>a>>b;
+    int ans=0;
+    int p1=0;
+    FOR(0,a.size()){
+        while(p1!=b.size()&&b[p1]!=a[i])p1++;
+        if(p1<b.size())ans++;
+        else break;
+        p1++;
+    }
+    cout<<ans<<el;
+    
 }
 
 int main(){
@@ -57,7 +73,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

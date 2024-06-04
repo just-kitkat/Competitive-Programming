@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,7 +50,20 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    ll n,k,a,b;
+    cin>>k>>n>>a>>b;
+    // cout<<b*n<<el;
+    if(b*n>=k){cout<<-1<<el;return;}
+    ll lo=0,hi=n;
+    while(lo<hi){
+        ll mid=(lo+hi)/2;
+        if(mid*a+(n-mid)*b>=k)hi=mid-1;
+        // if(mid*a+(n-mid)*b<k)lo=mid+1;
+        else lo=mid+1;
+        // else {cout<<mid<<el;return;}
+    }
+    cout<<((lo)*a+(n-lo)*b>=k?(ll)lo-1:(ll)lo)<<el;
+    
 }
 
 int main(){
@@ -57,7 +74,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -47,7 +51,32 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 void solve(int tc){
     int n;
+    cin>>n;
+    int ma=0;
+    map<int,int>m;
+    FOR(0,n){
+        int x;cin>>x;
+        m[x]++;
+    }
+    int ans=0;
+    vi z(m.size());
+    int p=0;
+    for(auto [k,v]:m)z[p++]=v;
+    sort(all(z),greater<int>());
+    int prev=INT_MAX;
+    for(auto x:z){
+        if(prev<=1||x==0)break;
+        if(x<prev){ans+=x;prev=x;}
+        else if(x>=prev){ans+=prev-1;prev-=1;}
+    }
+    cout<<ans<<el;
+    
 }
+/*
+1
+9
+1 1 2 2 3 3 4 4 5
+*/
 
 int main(){
     ios_base::sync_with_stdio(0);
@@ -57,7 +86,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

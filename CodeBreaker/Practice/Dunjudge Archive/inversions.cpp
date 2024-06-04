@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -43,10 +47,43 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+int ans;
 
+void merge(int* arr1,int n1,int* arr2,int n2,int* input,int size){
+    int i = 0, j = 0, k = 0;
+    while(i<n1 && j<n2){
+        if(arr1[i] <= arr2[j]) input[k++] = arr1[i++];
+        else {input[k++] = arr2[j++];ans+=n1-i;}
+    }
+    while(i < n1) {input[k++] = arr1[i++];}
+    while(j < n2) {input[k++] = arr2[j++];}
+}
+
+
+void mergeSort(int input[], int size){
+    if(size == 1 || size == 0) return;
+    int n1 = size/2, n2 = size - n1;
+    int* arr1 = new int[n1];
+    int* arr2 = new int[n2];
+    for(int i=0;i<n1;i++) arr1[i] = input[i];
+    int k=0;
+    for(int j=n1;j<size;j++) arr2[k++] = input[j];
+    
+    mergeSort(arr1,n1);
+    mergeSort(arr2,n2);
+    merge(arr1,n1,arr2,n2,input,size);
+ }
 
 void solve(int tc){
     int n;
+    cin>>n;
+    int a[n];
+    FOR(0,n)cin>>a[i];
+    ans=0;
+    mergeSort(a,n);
+    cout<<ans<<el;
+
+    
 }
 
 int main(){
@@ -57,7 +94,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

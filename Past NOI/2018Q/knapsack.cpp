@@ -27,6 +27,10 @@ using namespace std;
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define show(x) cerr << #x << " is " << x << endl;
+#define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
+#define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
@@ -46,7 +50,27 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 
 void solve(int tc){
-    int n;
+    int n,W;
+    cin>>W>>n;
+    vi w(n),v(n);
+    int a=0;
+    FOR(0,n){
+        int x,y,k;cin>>y>>x>>k;
+        w[i]=x,v[i]=y,a=max(a,x);
+    }
+    vector<pair<bool,ll>> possible(W,pair<bool,int>({0,0}));
+    possible[0] = {true,0};
+    ll ans=0;
+    for (int k = 0; k < n; k++) {
+        for (int x = W; x >= 0; x--) {
+            if (possible[x].F&&x+w[k]<=W) {
+                possible[x+w[k]] = {true,max(possible[x+w[k]].S,possible[x].S+v[k])};
+                ans=max(ans,possible[x].S+v[k]);
+            }
+        }
+    }
+    cout<<ans<<el;
+    
 }
 
 int main(){
@@ -57,7 +81,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-  //  cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
