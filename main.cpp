@@ -31,6 +31,7 @@ using namespace std;
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
+#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
@@ -51,8 +52,8 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0;
 void solve(int tc){
-    cin>>n;
-    cout<<n;
+    vi a={2,1,3,4};
+    show_vec(a);
     
 }
 
@@ -64,7 +65,7 @@ signed main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
