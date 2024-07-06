@@ -5,6 +5,7 @@
 
 using namespace std;
 
+#define int long long
 #define el "\n"
 #define arr array
 #define ll long long
@@ -48,13 +49,14 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-
+ll n=0, m=0, k=0;
 void solve(int tc){
-    int n;
     cin>>n;
+    cout<<n;
+    
 }
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
@@ -62,7 +64,7 @@ int main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
