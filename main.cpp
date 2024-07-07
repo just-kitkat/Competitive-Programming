@@ -52,10 +52,47 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0;
 void solve(int tc){
-    vi a={2,1,3,4};
-    show_vec(a);
-    
+    cin>>n>>m;
+    vector<vi>a(m);
+    vi t;
+    FOR(0,m){
+        int x;cin>>x;
+        t.pb(x);
+        JFOR(0,x){int q;cin>>q;a[i].pb(q);}
+    }
+    unordered_map<int,int>c;
+    vi ind(m);
+    bool f=1;
+    while(f){
+        f=0;
+        FOR(0,m){
+            // show_vec(ind);
+            // show_vec(t);
+            if(ind[i]>=t[i])continue;
+            if(c.count(a[i][ind[i]]) and c[a[i][ind[i]]]!=i){
+                ind[c[a[i][ind[i]]]]++;
+                ind[i]++;
+                f=1;
+            }else{
+                c[a[i][ind[i]]]=i;
+            }
+        }
+    }
+    string ans="Yes";
+    FOR(0,m)if(ind[i]<t[i])ans="No";
+    cout<<ans;
 }
+/*
+4 4
+1
+1 
+1
+2
+3
+1 2 3
+3
+3 4 4
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
