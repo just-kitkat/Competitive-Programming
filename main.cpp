@@ -2,12 +2,8 @@
 // Status: WIP
 
 #include <bits/stdc++.h>
-//#include <ext/pb_ds/assoc_container.hpp>
-//#include <ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #define int long long
 #define el "\n"
@@ -43,15 +39,11 @@ string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
 void yes() { cout<<"YES\n"; }
 void no() { cout<<"NO\n"; }
-mt19937_64 rnd(chrono::steady_clock::now().time_since_epoch().count());
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
 #define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
 #define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
-//using namespace __gnu_pbds;
-//#define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
-//#define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
@@ -60,9 +52,41 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0;
 void solve(int tc){
-    cout<<rnd()<<el;
-    
+    cin>>n>>m;
+    vector<vi>a(m);
+    vi ind(m,0);
+    vi t;
+    queue<pii>q; // ind, num
+    unordered_set<int> s;
+    FOR(0,m){
+        int x;cin>>x;
+        t.pb(x);
+        JFOR(0,x){int z;cin>>z;a[i].pb(z);}
+    }
+
+    FOR(0,m){
+        ind[i]++;
+        if(s.count(a[i][0]) and (int)a[i].size()>1)q.push({i,1});
+        s.insert(a[i][0]);
+    }
+    while(!q.empty()){
+        auto x=q.front();
+        if(s.count(a[x.F][x.S])){
+            if((int)a[x.F].size()>x.S+1)q.push({x.F,x.S+1});
+        }
+    }
 }
+/*
+4 4
+1
+1 
+1
+2
+3
+1 2 3
+3
+3 4 4
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -72,7 +96,7 @@ signed main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
