@@ -31,7 +31,7 @@ using namespace std;
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) for(auto &x:a)show3(x.F,x.S.F,x.S.S);
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
@@ -54,27 +54,24 @@ ll n=0, m=0, k=0;
 void solve(int tc){
     cin>>n>>m;
     vector<vi>a(m);
-    vi ind(m,0);
-    vi t;
     queue<pii>q; // ind, num
-    unordered_set<int> s;
+    unordered_map<int,pii> s;
     FOR(0,m){
         int x;cin>>x;
-        t.pb(x);
         JFOR(0,x){int z;cin>>z;a[i].pb(z);}
     }
-
-    FOR(0,m){
-        ind[i]++;
-        if(s.count(a[i][0]) and (int)a[i].size()>1)q.push({i,1});
-        s.insert(a[i][0]);
-    }
+    FOR(0,m)q.push({i,0});
     while(!q.empty()){
-        auto x=q.front();
+        auto x=q.front(); q.pop();
         if(s.count(a[x.F][x.S])){
-            if((int)a[x.F].size()>x.S+1)q.push({x.F,x.S+1});
-        }
+            if(x.S+1<(int)a[x.F].size()) 
+                q.push({x.F,x.S+1});
+            if(s[a[x.F][x.S]].S+1<(int)a[s[a[x.F][x.S]].F].size())
+                q.push({s[a[x.F][x.S]].F, s[a[x.F][x.S]].S+1});
+            s.erase(a[x.F][x.S]);
+        }else s[a[x.F][x.S]]={x.F,x.S};
     }
+    FOR(0,m)if(!s.empty()){cout<<"No";return;}cout<<"Yes";
 }
 /*
 4 4
