@@ -1,27 +1,28 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
 //#include <ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
-//#pragma GCC optimize("O3,unroll-loops")
-//#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #define int long long
 #define el "\n"
 #define arr array
 #define ll long long
 #define ld long double
-#define ii pair<int, int>
+#define pii pair<int, int>
 #define pll pair<long long, long long>
 #define vi vector<int>
 #define vll vector<long long>
-#define vii vector<ii>
-#define vllll vector<pll>
-#define umap unordered_map
-#define uset unordered_set
+#define vii vector<pair<int,int>>
+#define vllll vector<pair<ll,ll>>
+#define mii map<int, int>
+#define si set<int>
+#define sc set<char>
 #define pb push_back
 #define mp make_pair
 #define F first
@@ -57,13 +58,48 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-ll n=0, m=0, k=0, q=0;
+ll n=0, m=0, k=0;
 void solve(int tc){
-    umap<int,int>m;
-    m[1]=2,m[3]=4;
-    cout<<m[3];
-    
+    cin>>n;
+    deque<char> dq;
+    int l=0,r=-1;
+    FOR(0,n){
+        string op;cin>>op;
+        // show_vec(dq);
+        // show3(op,l,r);
+        if(op=="ADD_BACK"){
+            char x;cin>>x;
+            if(r==(int)dq.size()-1) dq.pb(x);
+            else dq[r+1]=x;
+            r++;
+        }else if(op=="ADD_FRONT"){
+            char x;cin>>x;
+            if(l==0){dq.push_front(x);r++;}
+            else {dq[l-1]=x;l--;}
+        }else if(op=="SNIP_BACK"){
+            int x;cin>>x;
+            r=l+x;
+        }else if(op=="SNIP_FRONT"){
+            int x;cin>>x;
+            l+=x+1;
+            if(l>r){l=0,r=-1;}
+        }else{
+            int x;cin>>x;
+            cout<<dq[l+x]<<el;
+        }
+    }
+    // 1 2 3
+    // l   r
 }
+/*
+6
+ADD_BACK C
+ADD_BACK A
+SNIP_FRONT 1
+ADD_BACK G
+ADD_FRONT T
+QUERY 0
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -81,3 +117,4 @@ signed main(){
 
     //__time__ //Runtime
 }
+// Note: int64_t for exactly 64 bit signed int
