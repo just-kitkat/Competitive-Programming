@@ -1,10 +1,10 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 
 using namespace std;
-
+#define int long long
 #define el "\n"
 #define arr array
 #define ll long long
@@ -51,30 +51,38 @@ void solve(int tc){
     vi a(n),b(n);
     FOR(0,n)cin>>a[i];
     FOR(0,n)cin>>b[i];
-    //2 rounds, A points 1st round, B points 2nd round
-    //Si = Ai*X + Bi*Y
-    //choose x and y
-    //2 cases, x=0 vs y=0 (greedy brute force)
-    int x=1,y=0;
-    ll prev=-1;
-    bool f=1;
-    FOR(0,n){
-        ll cur = a[i]*x+b[i]*y;
-        if(cur>=prev&&prev!=-1){f=0;break;}
-        else prev=cur;
+    ld mi=-LDBL_MAX, ma=LDBL_MAX;
+    FOR(0,n-1){
+        ld t=((ld)b[i+1]-b[i])/((ld)a[i]-a[i+1]);
+        if(a[i]-a[i+1]<0)ma=min(ma,t);
+        else if (a[i]-a[i+1]==0){ma=-1;break;}
+        else mi=max(mi,t);
+        // cout<<t<<' '<<ma<<el;
     }
-    x=0;y=1;prev=-1;
-    bool f2=1;
-    if(!f)FOR(0,n){
-        ll cur = a[i]*x+b[i]*y;
-        if(cur>=prev&&prev!=-1){f2=0;break;}
-        else prev=cur;
+    bool f;
+    if(mi<ma and ma>0 or 
+    ((ma==LDBL_MIN or mi==-LDBL_MAX) and ma>0))f=1;
+    else f=0;
+
+    mi=-LDBL_MAX, ma=LDBL_MAX;
+    auto x=b;
+    b=a;a=x;
+    FOR(0,n-1){
+        ld t=((ld)b[i+1]-b[i])/((ld)a[i]-a[i+1]);
+        if(a[i]-a[i+1]<0)ma=min(ma,t);
+        else if (a[i]-a[i+1]==0){ma=-1;break;}
+        else mi=max(mi,t);
+        // cout<<t<<' '<<ma<<el;
     }
-    if(f||f2)cout<<"YES"<<el;else cout<<"NO"<<el;
+    bool f2;
+    if(mi<ma and ma>0 or 
+    ((ma==LDBL_MIN or mi==-LDBL_MAX) and ma>0))f2=1;
+    else f2=0;
+    if(f or f2)yes();else no();
     
 }
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
