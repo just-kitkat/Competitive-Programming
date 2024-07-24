@@ -59,27 +59,52 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-unsigned ll n=0, m=0, k=0, q=0;
+ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n>>k;
-    vi a(n);FOR(0,n){int x;cin>>x;a[i]=abs(x);}
-    int p1=0,p2=k;
+    cin>>m>>n>>k;
+    queue<vi> qu;
+    bool vis[m][n]={0};
     int ans=0;
-    while(p2<n){
-        ans+=abs(a[p1]-a[p2]);
-        p1++;p2++;
+    FOR(0,k){
+        int x,y;
+        cin>>y>>x;
+        x--;y--;
+        vis[y][x]=1;
+        qu.push({y,x,1});
     }
-    reverse(all(a));
-    p1=0,p2=k;
-    int ans2=0;
-    while(p2<n){
-        ans2+=abs(a[p1]-a[p2]);
-        p1++;p2++;
+    while(!qu.empty()){
+        auto x=qu.front();
+        // show_vec(x);
+        qu.pop();
+        ans=max(ans,x[2]);
+        if(x[0]>0 and x[1]>0 and !vis[x[0]-1][x[1]-1])
+            qu.push({x[0]-1,x[1]-1,x[2]+1}),
+            vis[x[0]-1][x[1]-1]=1;
+        if(x[0]>0 and !vis[x[0]-1][x[1]])
+            qu.push({x[0]-1,x[1],x[2]+1}),
+            vis[x[0]-1][x[1]]=1;
+        if(x[0]>0 and x[1]<n-1 and !vis[x[0]-1][x[1]+1])
+            qu.push({x[0]-1,x[1]+1,x[2]+1}),
+            vis[x[0]-1][x[1]+1]=1;
+        if(x[1]<n-1 and !vis[x[0]][x[1]+1])
+            qu.push({x[0],x[1]+1,x[2]+1}),
+            vis[x[0]][x[1]+1]=1;
+        if(x[1]>0 and !vis[x[0]][x[1]-1])
+            qu.push({x[0],x[1]-1,x[2]+1}),
+            vis[x[0]][x[1]-1]=1;
+        if(x[0]<m-1 and !vis[x[0]+1][x[1]])
+            qu.push({x[0]+1,x[1],x[2]+1}),
+            vis[x[0]+1][x[1]]=1;
+        if(x[0]<m-1 and x[1]>0 and !vis[x[0]+1][x[1]-1])
+            qu.push({x[0]+1,x[1]-1,x[2]+1}),
+            vis[x[0]+1][x[1]-1]=1;
+        if(x[0]<m-1 and x[1]<n-1 and !vis[x[0]+1][x[1]+1])
+            qu.push({x[0]+1,x[1]+1,x[2]+1}),
+            vis[x[0]+1][x[1]+1]=1;
     }
-    cout<<min(ans,ans2);
-
+    cout<<ans;
+    
 }
-
 
 signed main(){
     ios_base::sync_with_stdio(0);

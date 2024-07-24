@@ -61,22 +61,17 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 unsigned ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n>>k;
-    vi a(n);FOR(0,n){int x;cin>>x;a[i]=abs(x);}
-    int p1=0,p2=k;
-    int ans=0;
-    while(p2<n){
-        ans+=abs(a[p1]-a[p2]);
-        p1++;p2++;
+    string s;getline(cin,s);
+    unordered_map<char,unsigned ll>dp;
+    string ss;
+    for(auto x:s)if(isalpha(x))ss.pb(tolower(x));
+    unsigned ll ans=0;
+    // show(ss);
+    for(auto x:ss){
+        if(x=='a')dp[x]++;
+        else dp[x]=dp[x]+dp[x-1];
     }
-    reverse(all(a));
-    p1=0,p2=k;
-    int ans2=0;
-    while(p2<n){
-        ans2+=abs(a[p1]-a[p2]);
-        p1++;p2++;
-    }
-    cout<<min(ans,ans2);
+    cout<<dp['z'];
 
 }
 
