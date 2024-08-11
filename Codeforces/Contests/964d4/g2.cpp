@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: AC (inc. G1)
 
 #include <bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -61,31 +61,35 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    string s;
-    cin>>s;
-    n = s.size();
-    int changed[n]={0};
-    if(n==1){cout<<1<<el;return;}
-    int p1=0,p2=1;
-    while(p2<n){
-        // show2(p1,p2);
-        if(changed[p1]==1){p1++;continue;}
-        if(p1>=p2){p2=p1+1;continue;}
-        if(s[p1]!=s[p2]){
-            changed[p2]=1,changed[p1]=1;
-            p1++,p2++;
-        }else p2++;
+    int lo=2,hi=1000,m1,m2;
+    while(lo<hi){
+        m1=lo+(hi-lo)/3;
+        m2=lo+((hi-lo)/3)*2;
+        // show2(lo,hi);
+        // show2(m1,m2);
+        cout<<"? "<<m2<<' '<<m1<<endl;
+        int r;
+        cin>>r;
+        if(r==-1){
+            cout<<-1<<endl;
+            exit(0);
+        }
+        if(r==m1*m2){
+            lo=m2+1;
+        }
+        else if(r==m1*(m2+1)){
+            hi=m2,lo=m1+1;
+        }else{
+            hi=m1;
+        }
     }
-    ll ans=INT_MAX;
-    FOR(0LL,n)if(changed[i]==0)ans=min(i,ans);
-    if(ans==INT_MAX)ans=n;
-    cout<<n-ans<<el;
+    cout << "! " << lo<<endl;
     
 }
 
 signed main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0); cout.tie(0);
 
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input

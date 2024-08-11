@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -61,27 +61,66 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    string s;
-    cin>>s;
-    n = s.size();
-    int changed[n]={0};
-    if(n==1){cout<<1<<el;return;}
-    int p1=0,p2=1;
-    while(p2<n){
-        // show2(p1,p2);
-        if(changed[p1]==1){p1++;continue;}
-        if(p1>=p2){p2=p1+1;continue;}
-        if(s[p1]!=s[p2]){
-            changed[p2]=1,changed[p1]=1;
-            p1++,p2++;
-        }else p2++;
+    cin>>n>>k;
+    vii a(n);
+    vi aa;
+    FOR(0,n)cin>>a[i].F;
+    FOR(0,n)cin>>a[i].S;
+    sort(all(a));
+    int highest = a.back().F;
+    int highestmodi = -1;
+    int med = a[(n-1)/2].F;
+    for(auto &x:a){aa.pb(x.F);if(x.S)highestmodi=max(highestmodi,x.F);}
+    sort(all(aa));
+
+    if(highestmodi==-1){
+        cout<<highest+a[(n-2)/2].F<<el;\
+    }else if(highestmodi+k > highest){
+        a.erase(find_if(
+            all(a),[highestmodi](const auto &p){return p.first==highestmodi;}
+        ));
+        cout<<highestmodi+k+a[(n-2)/2].F<<el;
+    }else{
+        int lo=0,hi=3e9,mid=(hi+lo)/2;
+        while(lo<hi){
+            mid=(hi+lo)/2;
+            int cnt=0;
+            int kk=k;
+            DFOR(n-2,0){
+                if(a[i].S==1 && a[i].F>=mid)cnt++;
+                else if(a[i].S==1 && a[i].F<mid && kk>=mid-a[i].F)
+                    cnt++,kk-=mid-a[i].F;
+                else if(a[i].S==0 && a[i].F>=mid)
+                    cnt++;
+            }
+            // show3(lo,mid,hi); show(cnt);
+            if(n-cnt-1 < (n-2)/2 + 1)lo=mid+1;
+            else hi=mid-1;
+        }
+        // show3(lo,mid,hi);
+        mid=lo;
+        int cnt=0;
+        int kk=k;
+        DFOR(n-2,0){
+            if(a[i].S==1 && a[i].F>=mid)cnt++;
+            else if(a[i].S==1 && a[i].F<mid && kk>=mid-a[i].F)
+                cnt++,kk-=mid-a[i].F;
+            else if(a[i].S==0 && a[i].F>=mid)
+                cnt++;
+        }
+        // show3(lo,mid,hi); show(cnt);
+        if(n-cnt-1 <= (n-2)/2 + 1)lo--;
+        // show(lo);
+        cout<<highest+lo<<el;
     }
-    ll ans=INT_MAX;
-    FOR(0LL,n)if(changed[i]==0)ans=min(i,ans);
-    if(ans==INT_MAX)ans=n;
-    cout<<n-ans<<el;
     
 }
+/*
+4 5
+1 2 3 10
+1 0 1 0
+
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

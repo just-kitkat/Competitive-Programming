@@ -58,28 +58,62 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+// int factorial[200005];
+ll n,m=1e9+7,k;
+const int MAXN = 200005;
+// int inverse(int x){return (ld)1/x;}
+// const int MAXN = 1e6;
 
-ll n=0, m=0, k=0, q=0;
+long long fac[MAXN + 1];
+long long inv[MAXN + 1];
+
+//** @return x^n modulo m in O(log p) time. */
+long long exp(long long x, long long n, long long m) {
+	x %= m;  // note: m * m must be less than 2^63 to avoid ll overflow
+	long long res = 1;
+	while (n > 0) {
+		if (n % 2 == 1) { res = res * x % m; }
+		x = x * x % m;
+		n /= 2;
+	}
+	return res;
+}
+
+/** Precomputes n! from 0 to MAXN. */
+void factorial(long long p) {
+	fac[0] = 1;
+	for (int i = 1; i <= MAXN; i++) { fac[i] = fac[i - 1] * i % p; }
+}
+
+/**
+ * Precomputes all modular inverse factorials
+ * from 0 to MAXN in O(n + log p) time
+ */
+void inverses(long long p) {
+	inv[MAXN] = exp(fac[MAXN], p - 2, p);
+	for (int i = MAXN; i >= 1; i--) { inv[i - 1] = inv[i] * i % p; }
+}
+
+/** @return nCr mod p */
+long long choose(long long n, long long r, long long p) {
+	return fac[n] * inv[r] % p * inv[n - r] % p;
+}
+// long long bc(int n, int k) {
+//     return (factorial[n]/((factorial[k] * factorial[n - k])));
+// }
 void solve(int tc){
-    string s;
-    cin>>s;
-    n = s.size();
-    int changed[n]={0};
-    if(n==1){cout<<1<<el;return;}
-    int p1=0,p2=1;
-    while(p2<n){
-        // show2(p1,p2);
-        if(changed[p1]==1){p1++;continue;}
-        if(p1>=p2){p2=p1+1;continue;}
-        if(s[p1]!=s[p2]){
-            changed[p2]=1,changed[p1]=1;
-            p1++,p2++;
-        }else p2++;
+    cin>>n>>k;
+    vi a(n);
+    FOR(0,n)cin>>a[i];
+    sort(all(a));
+    int ans=0;
+    FOR(k/2,n-k/2){
+        int left=choose(i,k/2,m);
+        int right=choose(n-i-1,k/2,m);
+        ans+=(a[i]*left*right)%m;
+        ans%=m;
     }
-    ll ans=INT_MAX;
-    FOR(0LL,n)if(changed[i]==0)ans=min(i,ans);
-    if(ans==INT_MAX)ans=n;
-    cout<<n-ans<<el;
+    cout<<ans<<el;
     
 }
 
@@ -89,9 +123,17 @@ signed main(){
 
     //__output__ // Redirect output to test.out
     //__input__ // Read test.in for input
-
+    // cout<<bc(23,12)<<endl;
+    // show(bc(6,4));
     int tc = 1;
     cin >> tc;
+    factorial(m);
+    inverses(m);
+    // factorial[0] = 1;
+    // for (int i = 1; i <= MAXN; i++) {
+    //     factorial[i] = (factorial[i - 1] * i) % m;
+    // }
+    // FOR(0,6)show(factorial[i]);
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

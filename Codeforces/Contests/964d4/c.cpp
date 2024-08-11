@@ -61,25 +61,22 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    string s;
-    cin>>s;
-    n = s.size();
-    int changed[n]={0};
-    if(n==1){cout<<1<<el;return;}
-    int p1=0,p2=1;
-    while(p2<n){
-        // show2(p1,p2);
-        if(changed[p1]==1){p1++;continue;}
-        if(p1>=p2){p2=p1+1;continue;}
-        if(s[p1]!=s[p2]){
-            changed[p2]=1,changed[p1]=1;
-            p1++,p2++;
-        }else p2++;
+    int s;
+    cin>>n>>s>>m;
+    vii a(n);
+    FOR(0,n){
+        int z,b;
+        cin>>z>>b;
+        a.pb({z,b});
     }
-    ll ans=INT_MAX;
-    FOR(0LL,n)if(changed[i]==0)ans=min(i,ans);
-    if(ans==INT_MAX)ans=n;
-    cout<<n-ans<<el;
+    sort(all(a));
+    int prev=0;
+    for(auto x:a){
+        if(x.F-prev>=s){yes();return;}
+        prev=x.S;
+    }
+    if(m-prev>=s){yes();return;}
+    no();
     
 }
 

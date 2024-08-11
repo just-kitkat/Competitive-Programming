@@ -58,28 +58,36 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+vi prange={3};
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    string s;
-    cin>>s;
-    n = s.size();
-    int changed[n]={0};
-    if(n==1){cout<<1<<el;return;}
-    int p1=0,p2=1;
-    while(p2<n){
-        // show2(p1,p2);
-        if(changed[p1]==1){p1++;continue;}
-        if(p1>=p2){p2=p1+1;continue;}
-        if(s[p1]!=s[p2]){
-            changed[p2]=1,changed[p1]=1;
-            p1++,p2++;
-        }else p2++;
+    int l,r;
+    cin>>l>>r;
+    int ans=0;
+    int tmp=ceil(log10(l+1)/log10(3));
+    ans+=tmp*2;
+    l++;
+    if(l==r){cout<<ans+ceil(log10(r+1)/log10(3))<<el;return;}
+    int t=1;
+    int c=1;
+    // t+=max(0ll,3-l);
+    // ans+=3-l;
+    // show(ans);
+    for(auto &x:prange){
+        if(x>r){
+            ans+=c*(r-(l-1)-t+1);
+            break;
+        }
+        int le=max(max(0ll,x-l+1)-t,0ll);
+        t+=le;
+        ans+=c*le;
+        c++;
+        // show3(ans,t,le);
+        // show(c);
+        if(t>=r)break;
     }
-    ll ans=INT_MAX;
-    FOR(0LL,n)if(changed[i]==0)ans=min(i,ans);
-    if(ans==INT_MAX)ans=n;
-    cout<<n-ans<<el;
+    cout<<ans<<el;
+    
     
 }
 
@@ -92,6 +100,7 @@ signed main(){
 
     int tc = 1;
     cin >> tc;
+    FOR(0,13)prange.pb(prange.back()*3);
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
