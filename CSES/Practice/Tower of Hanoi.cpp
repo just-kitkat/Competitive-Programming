@@ -1,6 +1,5 @@
 // Author: JustKitkat
 // Status: WIP
-// cbr gekko
 
 #include <bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -60,35 +59,17 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-int dp[505][505], a[505][505];
-int solve(int x, int y){
-    // show2(x,y);
-    if(dp[x][y]!=-1) return dp[x][y];
-    int total = 0;
-    for(auto &z: {-1,0,1})
-        total = max(total, solve(x+1, y+z));
-    return dp[x][y] = total + a[x][y];
-}
-
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n>>m;
-    FOR(0,n+1){
-        JFOR(0,m+2){
-            if(j==0 || j == m+1 || i==n)dp[i][j]=0;
-            else dp[i][j]=-1;
-        }
-    }
-    FOR(0,n)JFOR(1,m+1){
-        cin>>a[i][j];
-        if(i==n-1)dp[i][j]=a[i][j];
-    }
-    int ans=0;
-    FOR(1,m+1) ans = max(ans, solve(0, i));
-    cout << ans;
-
+    cin>>n;
     
 }
+
+/*
+    
+1    
+3    
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -98,7 +79,7 @@ signed main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

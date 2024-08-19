@@ -1,6 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
-// cbr gekko
+// Status: AC
 
 #include <bits/stdc++.h>
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -60,35 +59,81 @@ const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-int dp[505][505], a[505][505];
-int solve(int x, int y){
-    // show2(x,y);
-    if(dp[x][y]!=-1) return dp[x][y];
-    int total = 0;
-    for(auto &z: {-1,0,1})
-        total = max(total, solve(x+1, y+z));
-    return dp[x][y] = total + a[x][y];
-}
-
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n>>m;
-    FOR(0,n+1){
-        JFOR(0,m+2){
-            if(j==0 || j == m+1 || i==n)dp[i][j]=0;
-            else dp[i][j]=-1;
+    cin>>n>>m>>k;
+    int w;
+    cin>>w;
+    vi a(w);
+    FOR(0,w)cin>>a[i];
+    ii mid={n/2,m/2};
+    sort(all(a),greater<int>());
+    vector<vi> grid(n,vi(m));
+    vi st;
+    FOR(0ll,n){
+        JFOR(0ll,m){
+            // corner
+            if((i==0 or i==n-1) && (j==0 or j==m-1))st.pb(1);
+            // else if(i==0 || i==n-1 || j==0 || j==m-1)st.pb(k*)
+            else{
+                int numx=0,numy=0;
+                // no overlap
+                if(i+1>=k && (n-i)>=k)numx = k;
+                // overlap
+                else numx = min({n-k+1,i+1,n-i});
+
+                // no overlap
+                if(j+1>=k && (m-j)>=k)numy = k;
+                // overlap
+                else numy = min({m-k+1,j+1,m-j});
+
+                st.pb(numx*numy);
+            }
         }
     }
-    FOR(0,n)JFOR(1,m+1){
-        cin>>a[i][j];
-        if(i==n-1)dp[i][j]=a[i][j];
-    }
+    // show_vec(st);
+    sort(all(st));
     int ans=0;
-    FOR(1,m+1) ans = max(ans, solve(0, i));
-    cout << ans;
-
+    if(!st.empty())
+        for(auto &x:a){
+            ans+=x*st.back();
+            st.pop_back();
+            if(st.empty())break;
+        }
+    
+    cout<<ans<<el;
+    // int p=0;
+    // int free=0;
+    // k++;
+    // int ans=0;
+    // while(p<n){
+    //     if(free==0)k--,free=(n-k-k+2)*(m-k-k+2)-p;
+    //     if(n-k-k+2<0 || m-k-k+2<0)free=0;
+    //     if(free==0)continue;
+    //     ans+=a[p]*(k*k);
+    //     p++;
+    //     free--;
+    //     show3(k,ans,free);
+    // }
+    // cout<<ans<<el;
     
 }
+/*
+center (edge - k) -> place all highest numbers
+
+1
+9 5 5
+6
+6 7 14 16 16 6
+
+2
+3 4 2
+9
+1 1 1 1 1 1 1 1 1
+2 1 1
+2
+5 7
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -98,7 +143,7 @@ signed main(){
     //__input__ // Read test.in for input
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
