@@ -1,29 +1,16 @@
+// Author: JustKitkat
+// Status: AC
+
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
 
-// Simple Segment Tree (no lazy prop/nodes)
-const int N = 1e5;  // limit for array size
-ll n;  // array size
-ll t[2 * N]={0};
-
-void build() {  // build the tree
-  for (int i = n - 1; i > 0; --i) t[i] = min(t[i<<1], t[i<<1|1]);
-}
-
-void modify(int p, ll value) {  // set value at position p
-  for (t[p += n] = value; p > 1; p >>= 1) t[p>>1] = min(t[p], t[p^1]);
-}
-
-int query(int l, int r) { 
-  ll res = LLONG_MAX;
-  for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
-    if (l&1) res = min(res,t[l++]);
-    if (r&1) res = min(res,t[--r]);
-  }
-  return res;
-}
-
+#define int long long
+#define el "\n"
+#define vi vector<int>
+#define vii vector<pair<int,int>>
+#define F first
+#define S second
+#define FOR(a,b) for(auto i=a;i<b;++i)
 
 struct node{
     int Start, End, Midpoint;
@@ -72,7 +59,24 @@ struct node{
 
 };
 
+signed main(){
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    int n=0, q=0, p;
+    cin>>n>>q;
+    p=q;
+    node st(0LL,n+q);
+    vi qq(q), pos(n+1);
+    vii ans(n+1);
+    FOR(1,n+1) ans[i].F=i, pos[i]=q+i-1;
+    for(auto &x:qq) cin>>x, ans[x].F=1;
 
-int main(){
-    return 0;
+    for(auto &x:qq){
+        auto idx = pos[x];
+        ans[x].S=max(ans[x].S, -q+idx+st.query(idx,n+q)+1);
+        st.update(idx,1), pos[x]=p-1, p--;
+    }
+    FOR(1,n+1)ans[i].S=max(ans[i].S, -q+pos[i]+st.query(pos[i],n+q)+1);
+
+    ans[0].F=-1;
+    for(auto &[a,b]:ans)if(a!=-1)cout<<a<<' '<<b<<el;
 }
