@@ -1,6 +1,5 @@
 // Author: JustKitkat
-// Status: TLE
-// Notes: Current algo O(n^2), Algo needed O(nlogn) using binary search
+// Status: WIP
 
 #include <bits/stdc++.h>
 
@@ -46,16 +45,61 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 
+struct node{
+    int Start, End, Midpoint;
+    int val;
+    node *l, *r;
+
+    node(int s, int e){
+        Start = s;
+        End = e;
+        Midpoint = (Start + End)/2;
+
+        if(Start == End){
+            val = 0;
+            return;
+        }
+
+        l = new node(Start, Midpoint);
+        r = new node(Midpoint + 1, End);
+		
+        val = 0;
+    }
+
+    int query(int ql, int qr){
+        if(ql <= Start && End <= qr){
+            return val;
+        }
+        if(End < ql || qr < Start){
+            return 0; //LLONG_MAX if taking min and vice versa, use 0 if sum
+        }
+        return l->query(ql, qr) + r->query(ql, qr);
+    }
+
+    void update(int qx, int qv){   
+
+        if(Start == End){
+            val = qv;
+            return;
+        }
+
+        if(qx <= Midpoint) l->update(qx, qv);
+        else r->update(qx, qv);
+
+        val = l->val + r->val;
+
+    }
+
+};
+
 void solve(int tc){
     int n;
     cin>>n;
-    vi a(n,0);
-    int x;
-    vi dp(n,1);
-    FOR(0,n)cin>>a[i];
-    FOR(0,n)JFOR(0,i)if(a[i]>a[j])dp[i]=max(dp[i],dp[j]+1);
-    int ans=*max_element(all(dp));
-    cout<<ans<<endl;
+    node *st = new node(0,n);
+    FOR(0,n){
+        int x;cin>>x;
+        st->update(i,x);
+    }
 }
 
 int main(){

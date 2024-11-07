@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: MLE (must use lazy creation) -> N too large
+// Status: AC
 
 #include <bits/stdc++.h>
 
@@ -43,78 +43,75 @@ const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define pii pair<int,int>
+#define dbg(v)\
+    cout << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 
-const int N = 1e5;  // limit for array size
-int n;  // array size
-int t[2 * N];
-int h = sizeof(int) * 8 - __builtin_clz(n);
-int d[N]; 
-void calc(int p, int k) {
-  if (d[p] == 0) t[p] = t[p<<1] + t[p<<1|1];
-  else t[p] = d[p] * k;
-}
+struct node{
+	node *left, *right;
+	int S, E, val, lazy;
+	node(int _s, int _e) : S(_s), E(_e){
+			left = right = nullptr;
+			val = 0;
+			lazy = 0;
+	}
 
-void apply(int p, int value, int k) {
-  t[p] = value * k;
-  if (p < n) d[p] = value;
-}
-void build(int l, int r) {
-  int k = 2;
-  for (l += n, r += n-1; l > 1; k <<= 1) {
-    l >>= 1, r >>= 1;
-    for (int i = r; i >= l; --i) calc(i, k);
-  }
-}
+	void prop(){
+		if(S == E) return;
+		int M = (S+E) >> 1;
+		if(left == nullptr){
+			left = new node(S, M);
+			right = new node(M+1, E);
+		}
+		if(lazy != 0){
+			left->val += lazy*(M-S+1);
+			left->lazy += lazy;
+			right->val += lazy*(E-M);
+			right->lazy += lazy;
+			lazy = 0;
+		}
+	}
 
-void push(int l, int r) {
-  int s = h, k = 1 << (h-1);
-  for (l += n, r += n-1; s > 0; --s, k >>= 1)
-    for (int i = l >> s; i < r >> s; ++i) if (d[i] != 0) {
-      apply(i<<1, d[i], k);
-      apply(i<<1|1, d[i], k);
-      d[i] = 0;
-    }
-}
-void modify(int l, int r, int value) {
-  if (value == 0) return;
-  push(l, l + 1);
-  push(r - 1, r);
-  int l0 = l, r0 = r, k = 1;
-  for (l += n, r += n; l < r; l >>= 1, r >>= 1, k <<= 1) {
-    if (l&1) apply(l++, value, k);
-    if (r&1) apply(--r, value, k);
-  }
-  build(l0, l0 + 1);
-  build(r0 - 1, r0);
-}
-
-int query(int l, int r) {
-  push(l, l + 1);
-  push(r - 1, r);
-  int res = 0;
-  for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
-    if (l&1) res += t[l++];
-    if (r&1) res += t[--r];
-  }
-  return res;
-}
+	int qry(int l, int r){
+		if (l > E || r < S) return 0;
+		if(l <= S && E <= r) return val;
+		prop();
+		return left->qry(l, r) + right->qry(l, r);
+	}
+	
+	void upd(int l, int r, int v){
+		if(l > E || r < S) return;
+		if(l <= S && E <= r){
+			val += v*(E-S+1);
+			lazy += v;
+			return;
+		}
+		prop();
+		left->upd(l, r, v);
+		right->upd(l, r, v);
+		val = left->val + right->val;
+	}
+};
 
 void solve(int tc){
-    int q;
+    int n, q;
     cin>>n>>q;
-    //build(1,n+2);
+    node *st = new node(1,n);
 
     FOR(0,q){
         int a,b,c,d;
         cin>>a>>b>>c;
-        if(a==1){cin>>d;modify(b,c+1,d);}
-        else cout<<query(b,c+1)<<el;
+        if(a==1){cin>>d;st->upd(b,c,d);}
+        else cout<<st->qry(b,c)<<el;
     }
     
 }
 
 
-int main(){
+signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 

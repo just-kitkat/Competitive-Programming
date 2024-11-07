@@ -72,6 +72,53 @@ struct node{
 
 };
 
+// Seg tree with lazy prop and lazy node creation
+struct node2{
+	node2 *left, *right;
+	int S, E, val, lazy;
+	node2(int _s, int _e) : S(_s), E(_e){
+			left = right = nullptr;
+			val = 0;
+			lazy = 0;
+	}
+
+	void prop(){
+		if(S == E) return;
+		int M = (S+E) >> 1;
+		if(left == nullptr){
+			left = new node2(S, M);
+			right = new node2(M+1, E);
+		}
+		if(lazy != 0){
+			left->val += lazy*(M-S+1);
+			left->lazy += lazy;
+			right->val += lazy*(E-M);
+			right->lazy += lazy;
+			lazy = 0;
+		}
+	}
+
+	int qry(int l, int r){
+		if (l > E || r < S) return 0;
+		if(l <= S && E <= r) return val;
+		prop();
+		return left->qry(l, r) + right->qry(l, r);
+	}
+	
+	void upd(int l, int r, int v){
+		if(l > E || r < S) return;
+		if(l <= S && E <= r){
+			val += v*(E-S+1);
+			lazy += v;
+			return;
+		}
+		prop();
+		left->upd(l, r, v);
+		right->upd(l, r, v);
+		val = left->val + right->val;
+	}
+};
+
 
 int main(){
     return 0;
