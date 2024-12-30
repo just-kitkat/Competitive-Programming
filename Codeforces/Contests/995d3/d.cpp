@@ -62,15 +62,23 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
+    int x,y;
+    cin>>n>>x>>y;
     vi a(n);
     for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    sort(all(a));
+    // show_vec(a);
+    int ans=0;
+    int total=0;for(auto &x:a)total+=x;
+    FOR(0,n-1){
+        total-=a[i];
+        int r=upper_bound(a.begin()+i+1,a.end(),total-x)-a.begin()-1;
+        int l=lower_bound(a.begin()+i+1,a.end(),total-y)-a.begin();
+        total+=a[i];
+        if(r<l)continue;
+        ans+=r-l+1;
     }
-    cout<<ans;
+    cout<<ans<<el;
     
 }
 
@@ -82,7 +90,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

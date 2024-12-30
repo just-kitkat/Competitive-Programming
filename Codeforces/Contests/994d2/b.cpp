@@ -60,17 +60,21 @@ const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-ll n=0, m=0, k=0, q=0;
+ll n=0, m_=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    string s;
+    cin>>s;
+    vi m(n,n);
+    FOR(0ll,n){
+        char c=s[i];
+        if(c=='p')JFOR(0ll,i+1)m[j]=min(m[j],i+1);
+        if(c=='s')JFOR(i,n)m[j]=min(m[j],n-i);
     }
-    cout<<ans;
+    sort(all(m));
+    // show_vec(m);
+    FOR(0,n)if(m[i]<i+1){no();return;}
+    yes();
     
 }
 
@@ -82,7 +86,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

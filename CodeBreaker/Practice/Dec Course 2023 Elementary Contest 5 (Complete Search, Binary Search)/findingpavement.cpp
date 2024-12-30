@@ -62,15 +62,15 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    int h,w;
+    cin>>h>>w;
+    FOR(0,h){
+        JFOR(0,w){
+            string s;
+            cin>>s;
+            if(s=="pavement"){cout<<i+1<<' '<<j+1;return;}
+        }
     }
-    cout<<ans;
     
 }
 

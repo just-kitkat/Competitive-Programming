@@ -59,18 +59,48 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+bool cmp(ii l,ii r){
+    return l.S-l.F>r.S-r.F;
+}
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
+    cin>>n>>k;
+    vi a(n),b(n);
     for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    for(auto &x:b)cin>>x;
+
+    vii c(n);
+    vi poss;
+    FOR(0,n)c[i]={a[i],b[i]},poss.pb(a[i]),poss.pb(b[i]);
+    discretize(poss);
+    sort(all(c),cmp);
+    sort(all(a));
+    sort(all(b));
+    int ans=0;
+    for(auto &x:poss){
+        int neg=n-(lower_bound(all(b),x)-b.begin());
+        int pos=n-(lower_bound(all(a),x)-a.begin());
+        neg-=pos;
+        if(neg<=k)ans=max(ans,(pos+neg)*x);
     }
-    cout<<ans;
+    cout<<ans<<el;
+
+
+    // int lo=0,hi=3e9+5,ans=0;
+    // while(lo<hi){
+    //     int mid=(lo+hi)/2;
+    //     int earn=0,neg=0;
+    //     FOR(0,n){
+    //         if(mid<=a[i])earn+=mid;
+    //         else if(mid<=b[i])earn+=mid,neg++;
+    //     }
+    //     if(neg>k)hi=mid-1;
+    //     else{
+    //         ans=max(ans,earn);
+    //         lo=mid+1;
+    //     }
+    // }
+    // cout<<lo<<el;
     
 }
 
@@ -82,7 +112,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

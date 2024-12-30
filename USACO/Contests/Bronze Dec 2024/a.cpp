@@ -59,20 +59,40 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+map<int,int>mm={{0,0},
+        {50,5},{500,55},{5000,555},
+        {50000,5555},{500000,55555},{5000000,555555},
+        {50000000,5555555},{500000000,55555555},
+        {5000000000,555555555}};
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    int s=0,found=0;
+    for(auto &x:mm)if(x.F<=n)s+=x.S,found=x.F;
+    int l=to_string(n).size()-1;
+    int oriL=l;
+    int start=4,end=4;
+    while(l--){
+        start*=10;
+        if(l!=0)start+=4;else start+=5;
+        end*=10;
+        end+=9;
     }
-    cout<<ans;
-    
+    // show2(s,l);
+    // show2(start,end);
+    if(n<45)cout<<0<<el;else
+    cout<<s+max(0ll,(n<=end?min(n-start+1,end-start+1):0ll))<<el;
 }
+/*
+
+100 - 1000: 5
+2000 - 10000: 5 + 10
+
+50 (5) 45 46 47 48 49
+500 (55) 445 446 447 448 449 450 451 ... 459 460 461 .. 499
+5000 (555) 4445 4446 4447 4448 4449 4450 4451 ... 4599
+50000 (55555) 44445 ... 45999
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -82,7 +102,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

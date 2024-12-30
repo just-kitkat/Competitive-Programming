@@ -65,12 +65,13 @@ void solve(int tc){
     cin>>n;
     vi a(n);
     for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    FOR(0,n-1){
+        if(a[i]*2>a[i+1] and a[i+1]*2>a[i]){
+            yes();
+            return;
+        }
     }
-    cout<<ans;
+    no();
     
 }
 
@@ -82,7 +83,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

@@ -63,15 +63,29 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    vi b(n);
+    for(auto &x:b)cin>>x;
+
+    int lo=0,hi=*max_element(all(b));
+    while(lo<hi){
+        auto a=b;
+        int mid=(lo+hi+1)/2;
+        // show3(lo,hi,mid);
+        // show_vec(a);
+        DFOR(n-1,2){
+            // show_vec(a);
+            m=min(a[i]-mid, b[i])/3;
+            if(m<=0)continue;
+            a[i]-=3*m;
+            a[i-1]+=m;
+            a[i-2]+=m*2;
+        }
+        if(*min_element(all(a))>=mid)lo=mid;
+        else hi=mid-1;
     }
-    cout<<ans;
-    
+    cout<<lo;
+    // 10 5 mid = 5   
+    // min((a[i]-mid), b[i]) > b[i])
 }
 
 signed main(){

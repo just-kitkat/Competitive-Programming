@@ -60,17 +60,53 @@ const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+ii dfs(int n, int k){
+    if(n<k) return {0,0};
+    if(n==1) return {1,1};
+    int res=0,mid=(n+1)/2,cnt=0;
+    if(n&1){
+        ii r=dfs(mid-1,k);
+        res+=r.F,cnt=r.S;
+        res+=res+cnt*mid;
+        cnt*=2;cnt++;
+        res+=mid;
+    }else{
+        ii r=dfs(mid,k);
+        res+=r.F,cnt+=r.S;
+        res+=res+cnt*mid;
+        cnt*=2;
+    }
+    return {res,cnt};
+}
+
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
-    }
-    cout<<ans;
+    cin>>n>>k;
+    int ans=0;
+    // int cnt=1;
+    // int used=0,passed=1,evencnt=1,evenseg=1,oddseg=1;
+    // while(n>=k){
+    //     int mid=(n+1)/2;
+    //     // if(n&1)ans+=(cnt-1)*(mid+passed+1)+(mid),used+=mid,passed+=2;
+    //     if(n&1){
+    //         show(mid+(cnt-1)*(n));
+    //         show((evenseg-1)*(evencnt + evencnt+(evenseg-1)*(evencnt))/2);
+    //         ans+=cnt*(mid + mid+(cnt-1)*(n))/2;
+    //         ans+=((evenseg)/2)*(evencnt + evencnt+((evenseg)/2-1)*(evencnt))/2;
+    //         ans+=((oddseg)/2)*(1 + 1+((oddseg)/2-1)*(1))/2;
+    //         evencnt=1;
+    //         passed*=2;
+    //         evenseg=1;
+    //         oddseg*=2;
+    //     }
+    //     show3(n,ans,cnt);
+    //     show3(cnt,mid,passed);
+    //     if(n==1)break;
+    //     if(n&1)n=mid-1;else n=mid,evencnt*=2,evenseg*=2,oddseg=1;
+    //     cnt*=2;
+    // }
+    ans=dfs(n,k).F;
+    cout<<ans<<el;
     
 }
 
@@ -82,7 +118,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

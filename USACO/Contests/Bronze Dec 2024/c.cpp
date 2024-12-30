@@ -62,15 +62,53 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    cin>>n>>k;
+    string s;
+    cin>>s;
+    string oo=s;
+    umap<string,int>occ;
+    FOR(0,n-2){
+        occ[s.substr(i,3)]++;
     }
-    cout<<ans;
+    vector<string>ans;
+    for(auto &x:occ)if(x.S>=k and x.F[0]!=x.F[1] and x.F[1]==x.F[2])ans.pb(x.F);
+    FOR(0,n){
+        char ori=s[i];
+        JFOR('a','z'+1){
+            if(s[i]==j)continue;
+            s[i]=j;
+            vector<pair<string,int>>pos,newpos;
+            if(i>=2)pos.pb({s.substr(i-2,3),1});
+            if(i>=1 and i<n-1)pos.pb({s.substr(i-1,3),2});
+            if(i<n-2)pos.pb({s.substr(i,3),3});
+            for(auto &x:pos){
+                if(x.F[0]!=x.F[1] and x.F[1]==x.F[2])newpos.pb(x);
+            }
+            pos=newpos;
+            for(auto &x:pos){
+                string test = x.F;
+                string original = test;
+                int tp=x.S;
+                if(tp==1)original[2]=ori;
+                if(tp==2)original[1]=ori;
+                if(tp==3)original[0]=ori;
+                int cnt=0;
+                if(test==original)continue;
+                if(i>=2 and (test==oo.substr(i-2,3)))cnt--;
+                if(i>=1 and i<n-1 and (test==oo.substr(i-1,3)))cnt--;
+                if(i<n-2 and (test==oo.substr(i,3)))cnt--;
+                // show3(test,cnt,occ[test]);
+                // show3(original,tp,i);
+                cnt+=occ[test]+1;
+                if(cnt>=k)ans.pb(test);
+            }
+        }
+        s[i]=ori;
+    }
+    discretize(ans);
+    sort(all(ans));
+    cout<<ans.size()<<el;
+    for(auto &x:ans)cout<<x<<el;
     
 }
 

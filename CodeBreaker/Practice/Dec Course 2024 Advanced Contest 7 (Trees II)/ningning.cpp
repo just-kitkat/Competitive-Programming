@@ -59,18 +59,58 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+vi a, ans,costs;
+umap<int,vi>adj;
+int szz[200005]={0};
+void szDfs(int v,int u){
+    szz[v]=1;
+    for(auto &x:adj[v]){
+        if(x==u)continue;
+        szDfs(x,v);
+        szz[v]+=szz[x];
+    }
+}
 
-ll n=0, m=0, k=0, q=0;
+int dfs(int v, int u, int xr, int target){
+    int cost=(a[v]^xr^target)*szz[v];
+    for(auto &x:adj[v]){
+        if(x==u)continue;
+        cost+=dfs(x,v,a[v]^target,target);
+    }
+    return cost;
+}
+
+int n,dp;
+void reroot_dfs(int v, int u){
+    ans[v]=dp;
+    for(auto &x:adj[v]){
+        if(x==u)continue;
+        int imcooked=dp;
+        dp+=(a[v]^a[x])*(n-2*szz[x]);
+        reroot_dfs(x,v);
+        dp=imcooked;
+    }
+}
+
+// ll n=0, m=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    a.resize(n+5,0);
+    ans.resize(n+5,-1);
+    costs.resize(n+5,0);
+    FOR(1,n+1)cin>>a[i];
+    FOR(0,n-1){
+        int a,b;
+        cin>>a>>b;
+        adj[a].pb(b);
+        adj[b].pb(a);
     }
-    cout<<ans;
+    szDfs(1,-1);
+    ans[1]=dfs(1,-1,0,a[1]);
+    // show_vec(costs);
+    dp=ans[1];
+    reroot_dfs(1,-1);
+    FOR(1,n+1)cout<<ans[i]<<' ';
     
 }
 

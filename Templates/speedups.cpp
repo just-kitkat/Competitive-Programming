@@ -1,8 +1,8 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
-// #include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 
@@ -50,7 +50,7 @@ mt19937_64 rnd(chrono::steady_clock::now().time_since_epoch().count());
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
 
 // PBDS -> initialise using `ordered_set s;` -> change to greater<int> for reversed order.
-// using namespace __gnu_pbds;
+using namespace __gnu_pbds;
 // #define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
 // #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
@@ -62,15 +62,15 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
-    }
-    cout<<ans;
+    // umap speedup
+    // #include <ext/pb_ds/assoc_container.hpp>
+    // using namespace __gnu_pbds;
+    //put these 2 lines of code right after the #include<bits/stdc++.h> for gp_hash_table
+    gp_hash_table<int, int> mp; //to declare the “faster” map
+    //aside from declaration all the functions and syntax remains the same
+    umap<int,int> m;
+    m.reserve(1<<20); // some power of 2 close to N
+    m.max_load_factor(0.25);
     
 }
 
@@ -82,7 +82,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

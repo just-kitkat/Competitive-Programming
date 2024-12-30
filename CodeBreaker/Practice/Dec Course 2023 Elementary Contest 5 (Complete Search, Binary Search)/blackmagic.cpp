@@ -62,16 +62,28 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    cin>>n>>m;
+    vector<vi> d(n,vi(3)), s(m,vi(4));
+    for(auto &x:d)cin>>x[0]>>x[1]>>x[2];
+    for(auto &x:s)cin>>x[0]>>x[1]>>x[2]>>x[3];
+    vi use(101);
+    for(auto &x:d)FOR(x[0],x[1]+1)use[i]=max(use[i],x[2]);
+    int ans=LLONG_MAX;
+    for (int i = 0; i < (1 << m); i++) {
+        auto cur=use;
+        int cost=0;
+        for (int j = 0; j < m; j++)
+            if (i & (1 << j)) {
+                // apply j+1
+                for(int k=s[j][0];k<s[j][1]+1;++k)cur[k]-=s[j][2];
+                cost+=s[j][3];
+            }
+        int c=1;
+        for(auto &x:cur)if(x>0)c=0;
+        if(c)ans=min(ans,cost);
     }
     cout<<ans;
-    
+
 }
 
 signed main(){

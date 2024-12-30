@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -28,6 +28,7 @@ using namespace std;
 #define S second
 #define all(a) (a).begin(), (a).end()
 #define FOR(a,b) for(auto i=a;i<b;++i)
+#define ZFOR(a,b) for(auto z=a;z<b;++z)
 #define DFOR(a,b) for(auto i=a;i>=b;--i)
 #define JFOR(a,b) for(auto j=a;j<b;++j)
 #define DJFOR(a,b) for(auto j=a;j>=b;--j)
@@ -59,21 +60,75 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+int a[205][205];
+ii dp[205][205];
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    // min cost kx+y
+    // let dp[i][j] be min cost 
+    // dp[i][j] = {min_cost, number taken}
+
+    cin>>n>>m>>k;
+    FOR(0,n)JFOR(0,m)cin>>a[i][j],dp[i][j]={LLONG_MAX,LLONG_MAX};
+    vector<vi>pref(n+5,vi(m+5,0));
+    FOR(0,n)JFOR(0,m)pref[i][j+1]=pref[i][j]+a[i][j];
+    FOR(0,n){
+        JFOR(0,m){
+            ii best={LLONG_MAX,LLONG_MAX};
+            if(i==0 and j==0){
+                show("in");
+                ZFOR(0,m){
+                    best=min(best,{k*z+a[0][z],z});
+                    show2(z,a[0][z]);
+                }
+                dp[i][j]=best;
+            }else if(i==0){
+                ZFOR(0,m)best=min(
+                    best,
+                    // dp[i][j-1].S is ops done so far
+                    {
+                        k*((z-dp[i][j-1].S+m)%m)+
+                        pref[0][z+dp[i][j-1].S+1]-pref[0][z],
+                        k*((z-dp[i][j-1].S+m)%m)
+                    });
+                dp[i][j]=best;
+            }else if(j==0){
+                ii bestvert={LLONG_MAX,LLONG_MAX};
+                ZFOR(0,m){
+                    int op=(z-j+m)%m;
+                    bestvert=min(bestvert,{dp[i-1][j].F+k*op+a[i-1][z],op});
+                }
+                dp[i][j]=bestvert;
+            }else{
+                ZFOR(0,m)best=min(
+                    best,
+                    // dp[i][j-1].S is ops done so far
+                    {
+                        k*((z-dp[i][j-1].S+m)%m)+
+                        pref[0][z+dp[i][j-1].S+1]-pref[0][z],
+                        k*((z-dp[i][j-1].S+m)%m)
+                    });
+                ii bestvert={LLONG_MAX,LLONG_MAX};
+                ZFOR(0,m){
+                    int op=(z-dp[i][j-1].S+m)%m;
+                    bestvert=min(bestvert,{dp[i-1][j].F+k*op+a[i-1][z],op});
+                }
+                dp[i][j]=min(best,bestvert);
+            }
+            show2(i,j);
+            show2(dp[i][j].F,dp[i][j].S);
+        }
     }
-    cout<<ans;
+    cout<<dp[n-1][m-1].F<<el;
     
 }
-
+/*
+1
+3 3 100
+3 4 9
+5 2 4
+0 101 101
+*/
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
@@ -82,7 +137,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

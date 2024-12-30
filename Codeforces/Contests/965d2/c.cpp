@@ -81,9 +81,9 @@ void solve(int tc){
         ));
         cout<<highestmodi+k+a[(n-2)/2].F<<el;
     }else{
-        int lo=0,hi=3e9,mid=(hi+lo)/2;
+        int lo=0,hi=3e9;
         while(lo<hi){
-            mid=(hi+lo)/2;
+            int mid=(hi+lo+1)/2;
             int cnt=0;
             int kk=k;
             DFOR(n-2,0){
@@ -94,23 +94,23 @@ void solve(int tc){
                     cnt++;
             }
             // show3(lo,mid,hi); show(cnt);
-            if(n-cnt-1 < (n-2)/2 + 1)lo=mid+1;
+            if(n-cnt-1 < (n-2)/2 + 1)lo=mid;
             else hi=mid-1;
         }
-        // show3(lo,mid,hi);
-        mid=lo;
-        int cnt=0;
-        int kk=k;
-        DFOR(n-2,0){
-            if(a[i].S==1 && a[i].F>=mid)cnt++;
-            else if(a[i].S==1 && a[i].F<mid && kk>=mid-a[i].F)
-                cnt++,kk-=mid-a[i].F;
-            else if(a[i].S==0 && a[i].F>=mid)
-                cnt++;
-        }
-        // show3(lo,mid,hi); show(cnt);
-        if(n-cnt-1 <= (n-2)/2 + 1)lo--;
-        // show(lo);
+        // // show3(lo,mid,hi);
+        // mid=lo;
+        // int cnt=0;
+        // int kk=k;
+        // DFOR(n-2,0){
+        //     if(a[i].S==1 && a[i].F>=mid)cnt++;
+        //     else if(a[i].S==1 && a[i].F<mid && kk>=mid-a[i].F)
+        //         cnt++,kk-=mid-a[i].F;
+        //     else if(a[i].S==0 && a[i].F>=mid)
+        //         cnt++;
+        // }
+        // // show3(lo,mid,hi); show(cnt);
+        // if(n-cnt-1 <= (n-2)/2 + 1)lo--;
+        // // show(lo);
         cout<<highest+lo<<el;
     }
     

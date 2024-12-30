@@ -60,18 +60,58 @@ const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+umap<int,vi>adj;
+vector<map<int,int>>sm;
+vii ans; // {ans, cnt}
+vi a;
+
+void dfs(int v, int u){
+	//show3("dfs",v,u);
+	ans[v]={a[v],1};
+	sm[v][a[v]]++;
+	for(auto &x:adj[v]){
+		if(x!=u){
+			dfs(x, v);
+			if(sm[v].size()<sm[x].size())swap(sm[v],sm[x]),ans[v]=ans[x];
+			for(auto &z:sm[x]){
+				sm[v][z.F]+=z.S;
+				if(sm[v][z.F]>ans[v].S)ans[v]={z.F,sm[v][z.F]};
+				else if(sm[v][z.F]==ans[v].S)ans[v].F+=z.F;
+			}
+		}
+	}
+	
+	//ans[v].S = {re,mm};
+}
+
+/*
+5
+1 4 4 3 3
+1 2
+2 3
+3 4
+1 5
+*/
+
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
-    }
-    cout<<ans;
-    
+	cin>>n;
+	a.resize(n+5);
+	ans.resize(n+5);
+	FOR(1,n+1)cin>>a[i];
+	sm.resize(n+5);
+	FOR(1,n+1);//sm[i][a[i]]=1;
+	FOR(0,n-1){
+		int u,v;
+		cin>>u>>v;
+		adj[u].pb(v);
+		adj[v].pb(u);
+	}
+	dfs(1,-1);
+	FOR(1,n+1)cout<<ans[i].F<<' ';
+	
+	
+
 }
 
 signed main(){

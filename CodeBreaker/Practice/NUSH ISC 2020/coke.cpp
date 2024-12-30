@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -60,19 +60,31 @@ const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
+bool cmp(ii l, ii r){
+    return ((ld)r.F/(ld)r.S) < ((ld)l.F/(ld)l.S);
+}
+
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    int n,k;cin>>n>>k;
+    vii a(n);
+    for(auto &x:a)cin>>x.F;for(auto &x:a)cin>>x.S;
+    sort(all(a),cmp);
+    int ans=0,alert=0;
+    for(auto &x:a){
+        if(alert>k)break;
+        ans+=alert*x.S;
+        alert+=x.F;
+        show2(alert,ans);
     }
     cout<<ans;
-    
 }
+
+/*
+left < right
+C2 * S1 < C1 * S2
+C2/S2 < C1/S1
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

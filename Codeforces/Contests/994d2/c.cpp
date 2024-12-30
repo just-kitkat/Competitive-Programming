@@ -59,18 +59,50 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-
+int mex(int a, int b){
+    if(a==0 and b==0)return 1;
+    if(a>=1 and b>=1)return 0;
+    if(a<1 and b>1 or a>1 and b<1)return 1;
+    if(a<2 and b<2)return 2;
+    assert(0);
+}
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    int x,y;
+    cin>>x>>y;
+    // x and y are friends
+    // adj are friends (in circle)
+    vi a(n+1,5);
+    a[x]=0,a[y]=1;
+    FOR(x,n+1){
+        if(i==x or i==y)continue;
+        a[i]=mex((i>1?a[i-1]:a[n]),(i<n?a[i+1]:a[1]));
     }
-    cout<<ans;
+    DFOR(x,1){
+        if(i==x or i==y)continue;
+        a[i]=mex((i>1?a[i-1]:a[n]),(i<n?a[i+1]:a[1]));
+    }
+    //check
+    int f=1;
+    FOR(1,n+1){
+        if(a[i]!=mex((i>1?a[i-1]:a[n]),(i<n?a[i+1]:a[1])))f=0;
+    }
+    if(f==0){
+        // show("u");
+        vi a(n+1,5);
+        a[x]=0,a[y]=2;
+        FOR(x,n+1){
+            if(i==x or i==y)continue;
+            a[i]=mex((i>1?a[i-1]:a[n]),(i<n?a[i+1]:a[1]));
+        }
+        DFOR(x,1){
+            if(i==x or i==y)continue;
+            a[i]=mex((i>1?a[i-1]:a[n]),(i<n?a[i+1]:a[1]));
+        }
+    }
+    FOR(1,n+1)cout<<a[i]<<' ';
+    cout<<el;
     
 }
 
@@ -82,7 +114,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

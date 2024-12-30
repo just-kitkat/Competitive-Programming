@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -62,15 +62,30 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    vi a(n);
-    for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    cin>>n>>m>>q;
+    // vi a(q);for(auto &x:a)cin>>x;
+    set<int>s;
+    s.insert(m);
+    FOR(0,q){
+        int x;
+        cin>>x;
+        vi a;
+        for(auto &p:s)a.pb(p);
+        for(auto &p:a){
+            if(!s.count(p))continue;
+            if(p<x){
+                s.insert(p+1);
+            }else if(p>x){
+                s.insert(p-1);
+            }else{
+                s.erase(p);
+                s.insert(1);
+                s.insert(n);
+            }
+        }
+        cout<<s.size()<<' ';
     }
-    cout<<ans;
+    cout<<el;
     
 }
 
@@ -82,7 +97,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

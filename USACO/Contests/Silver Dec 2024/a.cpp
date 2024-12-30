@@ -65,15 +65,24 @@ void solve(int tc){
     cin>>n;
     vi a(n);
     for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    int bessie=(n+1)/2;
+    vi pref(n+1);
+    FOR(0,n)pref[i+1]=pref[i]+a[i];
+    int ans=LLONG_MAX;
+    
+    FOR(0,n-bessie){
+        ans=min(ans,pref[i+bessie+1]-pref[i]);
     }
-    cout<<ans;
+
+    int s=0;for(auto &x:a)s+=x;
+    cout<<ans<<' '<<s-ans<<el;
     
 }
+/*
+3
+1 5 1
 
+*/
 signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
@@ -82,7 +91,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

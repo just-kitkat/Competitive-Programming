@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -63,14 +63,28 @@ const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the pr
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
     cin>>n;
-    vi a(n);
+    vi r(n),a(n),b(n);
+    for(auto &x:r)cin>>x;
     for(auto &x:a)cin>>x;
-    int ans=a[0],c=a[0];
-    FOR(1,n){
-        c=min(c+a[i],a[i]);
-        ans=min(c,ans);
+    for(auto &x:b)cin>>x;
+    int ans=0;
+    int lo=0,hi=2e9,mid;
+    while(lo<hi){
+        mid=(hi+lo+1)/2;
+        // try making `mid` burgers
+        int maxA=mid,minA=0;
+        FOR(0,n){
+            if(a[i]==b[i]){if(a[i]*mid>r[i])minA=1e18;}
+            else if(min(a[i],b[i])*mid>r[i])minA=1e18;
+            else if(a[i]<b[i])minA=max(minA,(int)(mid-(int)floor(((ld)r[i]-a[i]*mid)/(b[i]-a[i]))));
+            else maxA=min(maxA,(int)floor(((ld)r[i]-b[i]*mid)/(a[i]-b[i])));
+            // show((int)floor(((ld)r[i]-b[i]*mid)/(a[i]-b[i])));
+        }
+        // show3(mid,minA,maxA);
+        if(minA<=maxA)lo=mid;
+        else hi=mid-1;
     }
-    cout<<ans;
+    cout<<lo;
     
 }
 
