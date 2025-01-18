@@ -59,74 +59,47 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int N=1;
-int fw[1000005]={0}, fw2[1000005]={0};
-void update(int x, int y, int v) { //inclusive
-    for (int tx=x; tx < N; tx += tx&(-tx)) fw[tx] += v, fw2[tx] -= v*(x-1);
-    for (int ty=y+1; ty < N; ty += ty&(-ty)) fw[ty] -= v, fw2[ty] += v*y; 
-}
-int sum (int x) {
-    int res = 0;
-    for (int tx=x; tx; tx -= tx&(-tx)) res += fw[tx]*x + fw2[tx];
-    return res;
-}
-int range_sum(int x, int y) { //inclusive
-    return sum(y)-sum(x-1);
-}
-umap<int,vi> adj;
-vi pre,endo;
-int c=3;
-void dfs(int v){
-	pre[v]=c++;
-	for(auto &x:adj[v]){
-		dfs(x);
-	}
-	endo[v]=c-1;
-}
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-	cin>>n>>q;
-	N=n+5;
-	vi p(n),s(n);
-	pre.resize(n+5),endo.resize(n+5);
-	adj.reserve(1000000);
-	FOR(0,n){
-		int x;cin>>x;
-		adj[x].pb(i);
-	}
-	dfs(0);
-	FOR(0,n){
-		int x;cin>>x;
-		update(pre[i],pre[i],x);
-	}
-	while(q--){
-		int op;cin>>op;
-		if(!op){
-			int x,d;
-			cin>>x>>d;
-			update(pre[x],endo[x],d);
-		}else{
-			int x;cin>>x;
-			cout<<range_sum(pre[x],pre[x])<<el;
-		}
-	}
-	
+    int l;
+    cin>>n>>l;
+    vii a(n);
+    for(auto &x:a)cin>>x.F>>x.S; // Xi, Ci
+    // dp[i] = max pumps needed to reach i
+    vi dp(l+1,1e18);
+    dp[0]=0;
+    sort(all(a));
+    FOR(1,l+1){
+        dp[i]=i;
+        for(auto &x:a){
+            int pumps = 0, cover = x.F - x.S;
+            if(i>=x.F+x.S) {pumps = i - (x.F+x.S); cover = x.F-x.S-pumps;}
+            else if(i<x.F-x.S) pumps = (x.F-x.S>=i?x.F-x.S-1:i-(x.F-x.S)-1), cover = 0;
+
+            dp[i] = min(
+                dp[i],
+                pumps + dp[max(0ll,cover-1)]
+            );
+        }
+    }
+    cout<<dp[l]<<el;
+    
 }
 
 signed main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
 
-	// freopen("out", "w", stdout);
-	// freopen("in", "r", stdin);
+    // freopen("out", "w", stdout);
+    // freopen("in", "r", stdin);
 
-	int tc = 1;
-	// cin >> tc;
-	for (int t = 1; t <= tc; t++) {
-		// cout << "Case #" << t << ": ";
-		solve(t);
-	}
+    int tc = 1;
+    cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
 
-	//__time__ //Runtime
+    //__time__ //Runtime
 }

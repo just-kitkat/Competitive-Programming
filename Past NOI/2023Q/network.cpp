@@ -59,74 +59,56 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int N=1;
-int fw[1000005]={0}, fw2[1000005]={0};
-void update(int x, int y, int v) { //inclusive
-    for (int tx=x; tx < N; tx += tx&(-tx)) fw[tx] += v, fw2[tx] -= v*(x-1);
-    for (int ty=y+1; ty < N; ty += ty&(-ty)) fw[ty] -= v, fw2[ty] += v*y; 
-}
-int sum (int x) {
-    int res = 0;
-    for (int tx=x; tx; tx -= tx&(-tx)) res += fw[tx]*x + fw2[tx];
-    return res;
-}
-int range_sum(int x, int y) { //inclusive
-    return sum(y)-sum(x-1);
-}
-umap<int,vi> adj;
-vi pre,endo;
-int c=3;
-void dfs(int v){
-	pre[v]=c++;
-	for(auto &x:adj[v]){
-		dfs(x);
-	}
-	endo[v]=c-1;
+
+umap<int,vi>adj;
+vector<uset<int>>sets;
+uset<int> nodes;
+
+void dfs(int v, int u){
+    int f=0;
+    for(auto &x:adj[v]){
+        if(x==u)continue;
+        dfs(x,v);
+        if(sets[v].size()<sets[x].size())swap(sets[v],sets[x]);
+        for(auto &xx:sets[x]){
+            if(sets[v].count(xx))f=1,sets[v].erase(xx);
+            else sets[v].insert(xx);
+        }
+    }
+    if(f or nodes.count(v))nodes.insert(v),sets[v].clear();
 }
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-	cin>>n>>q;
-	N=n+5;
-	vi p(n),s(n);
-	pre.resize(n+5),endo.resize(n+5);
-	adj.reserve(1000000);
-	FOR(0,n){
-		int x;cin>>x;
-		adj[x].pb(i);
-	}
-	dfs(0);
-	FOR(0,n){
-		int x;cin>>x;
-		update(pre[i],pre[i],x);
-	}
-	while(q--){
-		int op;cin>>op;
-		if(!op){
-			int x,d;
-			cin>>x>>d;
-			update(pre[x],endo[x],d);
-		}else{
-			int x;cin>>x;
-			cout<<range_sum(pre[x],pre[x])<<el;
-		}
-	}
-	
+    cin>>n>>m;
+    sets.resize(n+5);
+    FOR(0,n-1){
+        int u,v; cin>>u>>v;
+        adj[u].pb(v); adj[v].pb(u);
+    }
+    FOR(0,m){
+        int a,b; cin>>a>>b;
+        if(a==b)nodes.insert(a);
+        sets[a].insert(i); sets[b].insert(i);
+    }
+    dfs(1, -1);
+    cout<<nodes.size()<<el;
+    for(auto &x:nodes)cout<<x<<' ';
 }
 
 signed main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
 
-	// freopen("out", "w", stdout);
-	// freopen("in", "r", stdin);
+    // freopen("out", "w", stdout);
+    // freopen("in", "r", stdin);
 
-	int tc = 1;
-	// cin >> tc;
-	for (int t = 1; t <= tc; t++) {
-		// cout << "Case #" << t << ": ";
-		solve(t);
-	}
+    int tc = 1;
+    // cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+    }
 
-	//__time__ //Runtime
+    //__time__ //Runtime
 }

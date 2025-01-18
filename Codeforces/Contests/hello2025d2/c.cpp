@@ -59,74 +59,65 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int N=1;
-int fw[1000005]={0}, fw2[1000005]={0};
-void update(int x, int y, int v) { //inclusive
-    for (int tx=x; tx < N; tx += tx&(-tx)) fw[tx] += v, fw2[tx] -= v*(x-1);
-    for (int ty=y+1; ty < N; ty += ty&(-ty)) fw[ty] -= v, fw2[ty] += v*y; 
-}
-int sum (int x) {
-    int res = 0;
-    for (int tx=x; tx; tx -= tx&(-tx)) res += fw[tx]*x + fw2[tx];
-    return res;
-}
-int range_sum(int x, int y) { //inclusive
-    return sum(y)-sum(x-1);
-}
-umap<int,vi> adj;
-vi pre,endo;
-int c=3;
-void dfs(int v){
-	pre[v]=c++;
-	for(auto &x:adj[v]){
-		dfs(x);
-	}
-	endo[v]=c-1;
-}
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-	cin>>n>>q;
-	N=n+5;
-	vi p(n),s(n);
-	pre.resize(n+5),endo.resize(n+5);
-	adj.reserve(1000000);
-	FOR(0,n){
-		int x;cin>>x;
-		adj[x].pb(i);
-	}
-	dfs(0);
-	FOR(0,n){
-		int x;cin>>x;
-		update(pre[i],pre[i],x);
-	}
-	while(q--){
-		int op;cin>>op;
-		if(!op){
-			int x,d;
-			cin>>x>>d;
-			update(pre[x],endo[x],d);
-		}else{
-			int x;cin>>x;
-			cout<<range_sum(pre[x],pre[x])<<el;
-		}
-	}
-	
+    int l,r;
+    cin>>l>>r;
+    vi ans={r};
+    int p=r, rlen=0, guess=1;
+    while(p){rlen++; p>>=1;}
+    FOR(0,rlen-2){guess<<=1; guess|=1;}
+    int cnt=rlen;
+    while(ans.size()!=3){
+        while(guess<l){
+            cnt--; guess=r;
+            int f=0;
+            DFOR(cnt-1,0){
+                if(f)guess|=(1<<i);
+                else if(r&(1<<i))guess=guess&(~(1<<i));
+                f|=(r&(1<<i)); //f=1 if met 1
+            }
+        }
+        ans.pb(guess);
+        if(guess+1==r) ans.pb(guess-1);
+        else ans.pb(guess+1);
+    }
+    for(auto &x:ans)cout<<x<<' ';cout<<el;
 }
 
+/*
+
+1
+128 137
+
+*/
+
 signed main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
 
-	// freopen("out", "w", stdout);
-	// freopen("in", "r", stdin);
+    // freopen("out", "w", stdout);
+    // freopen("in", "r", stdin);
 
-	int tc = 1;
-	// cin >> tc;
-	for (int t = 1; t <= tc; t++) {
-		// cout << "Case #" << t << ": ";
-		solve(t);
-	}
+    int tc = 1;
+    cin >> tc;
+    vector<vi> ex={
+        {1, 2, 0},
+        {8, 7, 1},
+        {2, 1, 3},
+        {7, 16, 11},
+        {134, 132, 137},
+        {98, 85, 76},
+        {123, 121, 118},
+        {965321865, 375544086, 12551794}
+    };
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve(t);
+        // show("exp");show_vec(ex[t-1]);
+        // cout<<"Expected: "<<((ex[t-1][0]^ex[t-1][1])+(ex[t-1][1]^ex[t-1][2])+(ex[t-1][0]^ex[t-1][2]))<<el;
+    }
 
-	//__time__ //Runtime
+    //__time__ //Runtime
 }
