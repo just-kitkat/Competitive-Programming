@@ -1,5 +1,5 @@
-// Codebreaker: winter
-// MST + 2k-decomp + LCA to find max edge
+// Author: JustKitkat
+// Status: AC
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -59,6 +59,7 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
+
 class UnionFind{
 private:
     vi p,rank,setSize;
@@ -87,83 +88,52 @@ public:
     }
 };
 
-umap<int,vii>adj;
-
-ii twok[200005][20]; //preset to -1
-int depth[200005]={0};
-void dfs(int x, int p, int d) {
-	for (int k = 0; k < 19; ++k) {
-		if (twok[x][k].F == -1) break;
-		twok[x][k+1] = {twok[twok[x][k].F][k].F,max(twok[twok[x][k].F][k].S,twok[x][k].S)};
-	}
-    depth[x]=d;
-    for (ii it:adj[x]) {
-		if(it.F == p) continue;
-		twok[it.F][0] = {x,it.S};
-		dfs(it.F,x,d+1);
-	}
-}
-
-ii kpar(int v, int k){
-    int res=0;
-    FOR(0,20) if(v==-1)break;else if(k&(1<<i)) res=max(res,twok[v][i].S), v = twok[v][i].F;
-    return {v,res};
-}
-
-
-ii lca(int a,int b){
-    if (depth[a] < depth[b]) swap(a,b);
-    ii r = kpar(a, depth[a] - depth[b]);
-    a=r.F;
-    int res=r.S;
-    if (a == b) return {a,res}; // edge case where b is an ancestor of a
-    for (int k=19;k>=0;k--){
-        if (twok[a][k].F != twok[b][k].F){
-            res=max({res, twok[a][k].S, twok[b][k].S});
-            a = twok[a][k].F; b = twok[b][k].F;
-        }
-    }
-    res=max(res,twok[a][0].S);
-    res=max(res,twok[b][0].S);
-    return {twok[a][0].F,res};
-}
-
-
 ll n=0, m=0, k=0, q=0;
+map<int,vi>adj1,adj2;
+
+
 void solve(int tc){
-    cin>>n>>m;
-    FOR(0,200005)JFOR(0,20)twok[i][j]={-1,(int)1e18};
-    vector<vi> edges;
-    FOR(0,m){
-        int u,v,w;
-        cin>>u>>v>>w;
-        edges.pb({w,u,v});
+    int m1,m2;
+    cin>>n>>m1>>m2;
+    UnionFind uf1(n+5);
+    UnionFind uf2(n+5);
+    vector<vi> e1,e2;
+    FOR(0,m1){
+        int u,v;
+        cin>>u>>v;
+        // uf1.unionSet(u,v);
+        adj1[u].pb(v);
+        adj1[v].pb(u);
+        e1.pb({u,v,0});
     }
-    auto back=edges;
-    sort(all(edges));
-    UnionFind uf(n+5);
-    umap<int, umap<int, int>>ss;
-    int total=0;
-    for(auto &x:edges){
-        if(!uf.isSameSet(x[1],x[2])){
-            uf.unionSet(x[1],x[2]);
-            total+=x[0];
-            adj[x[1]].pb({x[2],x[0]});
-            adj[x[2]].pb({x[1],x[0]});
-            ss[x[1]][x[2]]=x[0];
-            ss[x[2]][x[1]]=x[0];
-        }
-    }
-    dfs(1, -1, 1);
-    FOR(0, m){
-        int v1=back[i][1],v2=back[i][2];
-        ii r=lca(back[i][1],back[i][2]);
-        if(ss[v1].count(v2))cout<<total-ss[v1][v2]+back[i][0];
-        else cout<<total+back[i][0]-r.S;
-        cout<<el;
-        // show2(r.F,r.S);
+    FOR(0,m2){
+        int u,v;
+        cin>>u>>v;
+        uf2.unionSet(u,v);
+        adj2[u].pb(v);
+        adj2[v].pb(u);
+        e2.pb({u,v,0});
     }
 
+    map<int,vi> p1,p2;
+    FOR(1,n+1){
+        p1[uf1.findSet(i)].pb(i);
+        p2[uf2.findSet(i)].pb(i);
+    }
+    int ans=0;
+    // remove
+    for(auto &x:e1){
+        if(!uf2.isSameSet(x[0],x[1]))ans++,x[2]=1;
+    }
+    for(auto &x:e1){
+        if(x[2]==1)continue;
+        uf1.unionSet(x[0],x[1]);
+    }
+    // add
+    for(auto &x:e2){
+        if(!uf1.isSameSet(x[0],x[1]))ans++,uf1.unionSet(x[0],x[1]);
+    }
+    cout<<ans<<el;
     
 }
 
@@ -175,7 +145,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
@@ -183,37 +153,3 @@ signed main(){
 
     //__time__ //Runtime
 }
-
-
-/*
-
-// Pre-computation using DFS 
-const int MAXN = 100050;
-const int LOGN = 17;
-int p[LOGN+1][MAXN];
-vector<int> adjList[MAXN];
-bitset<MAXN> visited;
-void dfs(int x) {
-    if (visited[x]) return;
-    visited[x] = 1;
-    for (int k = 0; k < LOGN; ++k) {
-        if (p[k][x] == -1) break;
-        p[k+1][x] = p[k][p[k][x]];
-    }
-    for (auto it:adjList[x]) {
-        if (visited[it]) continue;
-        p[0][it] = x;
-        dfs(it);
-    }
-}
-
-// Per query, d-th ancestor of x 
-int ancestor(int x, int d) {
-    for (int k = 0; k <= LOGN && x != -1; ++k) {
-        if (d & (1<<k)) 
-            x = p[k][x];
-    }
-    return x;
-}
-
-*/

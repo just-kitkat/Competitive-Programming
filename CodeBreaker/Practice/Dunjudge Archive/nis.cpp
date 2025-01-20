@@ -59,46 +59,29 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
-}
 
 ll n=0, m=0, k=0, q=0;
+const int N=1e7+5;
+int fw[N]={0};
+void update(int x, int v) {
+    for (; x<N; x+=x&(-x)) fw[x] = (fw[x] + v) % MOD; 
+}
+int sum(int x) {
+    int res = 0;
+    for(; x; x-=x&(-x)) res = (res + fw[x]) % MOD;
+    return res;
+}
 void solve(int tc){
     cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    vi a(n);
+    for(auto &x:a)cin>>x;
+    vi b=a;
+    sort(all(b));
+    for(auto &x:a)x=lower_bound(all(b),x)-b.begin()+1;
+    for(auto &x:a)update(x,sum(x-1)+1);
+    cout<<sum(1e7+2);
     
 }
-
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

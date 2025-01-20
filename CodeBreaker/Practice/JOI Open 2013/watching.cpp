@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -55,50 +55,45 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 // #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+const ll INF = 1e15;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
+vi a;
+ll n=0, m=0, k=0, q=0,pp;
+vector<vii>memo(2001,vii(2001));
+int dp(int p, int index, int w){
+    if(index==n)return 0;
+    if(memo[index][p].S==w)return memo[index][p].F;
+    // either use one small (p) or large (q) camera
+    int newindexsmall=index;
+    while(newindexsmall<n and a[newindexsmall]-a[index]+1<=w)newindexsmall++;
+    int newindexlarge=min(index,newindexsmall-1);
+    while(newindexlarge<n and a[newindexlarge]-a[index]+1<=2*w)newindexlarge++;
+    memo[index][p]={min(
+        p<pp?dp(p+1,newindexsmall,w):INF,
+        dp(p,newindexlarge,w)+1
+    ),w};
+    return memo[index][p].F;
 }
 
-ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    cin>>n>>pp>>q;
+    a.resize(n);
+    for(auto &x:a)cin>>x;
+    sort(all(a));
+
+    int lo=1,hi=1e15;
+    while(lo<hi){
+        int mid=(lo+hi)/2;
+        // cout<<endl;
+        // show3(lo,mid,hi);
+        if(dp(0,0,mid)<=q)hi=mid;
+        else lo=mid+1;
+    }
+    cout<<lo;
     
 }
-
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

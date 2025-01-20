@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -55,50 +55,50 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 // #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+const ll INF = 1e15;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
-}
 
-ll n=0, m=0, k=0, q=0;
+ll n=0, m=0, k=0, q=0,v;
+vi a;
+const int N1=105,N2=10005;
+ii dp[N1][N2];
 void solve(int tc){
-    cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    FOR(0,N1)JFOR(0,N2)dp[i][j]=(j?mp(INF,1ll):mp(0ll,1ll));
+    cin>>v>>n;
+    a.resize(n);
+    for(auto &x:a)cin>>x;
+    sort(all(a));
+    dp[0][0]={0,1};
+    // dp[i][j] = min coins needed to make j using the first i coins
+    FOR(0,n){
+        JFOR(0,v+1)dp[i+1][j]=dp[i][j];
+        JFOR(0,v+1){
+            if(j+a[i]<=v){
+                auto original=dp[i+1][j+a[i]];
+                dp[i+1][j+a[i]]=min(
+                    dp[i][j+a[i]],
+                    {dp[i+1][j].F+1,dp[i+1][j].S}
+                );
+                int f=dp[i+1][j+a[i]].F;
+                dp[i+1][j+a[i]].S=0;
+                if(dp[i][j+a[i]].F==dp[i+1][j+a[i]].F)dp[i+1][j+a[i]].S+=dp[i][j+a[i]].S;
+                if(dp[i+1][j].F+1==dp[i+1][j+a[i]].F)dp[i+1][j+a[i]].S+=dp[i+1][j].S;
+            }
+        }
+    }
+    // for(auto &x:dp){for(auto &xx:x)cout<<xx.F<<','<<xx.S<<"  ";cout<<endl;}
+    int A = dp[n][v].F;
+    if(A>=INF)A=-1;
+    cout<<A<<el;
+    if(A==-1)return;
+    cout<<dp[n][v].S;
+
     
+
 }
 
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

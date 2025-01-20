@@ -59,46 +59,32 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
+int memo[151][101][51];
+int totalc,totalcents;
+int dp(int c, int n5, int n10){
+    if(c==0)return 0;
+    if(memo[c][n5][n10]!=-1)return memo[c][n5][n10];
+    int best=LLONG_MAX;
+    int n1=totalcents-n5*5-n10*10-(totalc-c)*8;
+    // show(n1);
+    // show3(totalcents,totalc,c);
+    if(n10!=0)best=min(best,dp(c-1,n5,n10-1)+1);
+    if(n10!=0 and n1>=3)best=min(best,dp(c-1,n5+1,n10-1)+4);
+    if(n5>0 and n1>=3)best=min(best,dp(c-1,n5-1,n10)+4);
+    if(n5>=2)best=min(best,dp(c-1,n5-2,n10)+2);
+    if(n1>=8)best=min(best,dp(c-1,n5,n10)+8);
+    return memo[c][n5][n10]=best;
 }
-
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    int c,n1,n5,n10;
+    cin>>c>>n1>>n5>>n10;
+    totalc=c,totalcents=n1+n5*5+n10*10;
+    fill(&memo[0][0][0],&memo[0][0][0]+151*101*51,-1ll);
+    int ans=dp(c,n5,n10);
+    cout<<ans<<el;
     
 }
-
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -108,7 +94,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

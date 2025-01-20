@@ -59,46 +59,41 @@ const ll INF = 1e9;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
-}
 
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    cin>>n>>m;
+    vi p;
+    map<int,int>mm;
+    vector<vi>a(n,vi(m));
+    FOR(0,n){
+        int use=-1;
+        JFOR(0,m){
+            int x;cin>>x;
+            a[i][j]=x;
+        }
+    }
+    for(auto &x:a)sort(all(x));
+    FOR(0,n)mm[a[i][0]]=i;
+    FOR(0,n){
+        if(mm.count(i))p.pb(mm[i]);
+    }
+    if(p.size()!=n){cout<<-1<<el;return;}
+    int f=1;
+    int ind=0;
+    FOR(0,m){
+        JFOR(0,n){
+            if(a[p[j]][i]!=ind)f=0;
+            ind++;
+        }
+    }
+    if(!f)cout<<-1<<el;
+    else{
+        for(auto &x:p)cout<<x+1<<' ';
+        cout<<el;
+    }
     
 }
-
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -108,7 +103,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

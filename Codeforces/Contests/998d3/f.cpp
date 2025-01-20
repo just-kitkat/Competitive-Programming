@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: AC
+// Status: WIP
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -56,49 +56,86 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 
 const int MAX_N = 1e5 + 5;
 const ll INF = 1e9;
-const ll MOD = 1e9+7;
+const ll MOD = 998244353;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int memo[105][105];
-int dp(int left, int last){
-    if(memo[left][last]!=-1)return 0;
-    if(left==0)return 1;
-    if(left<5)return 0;
-    int res=0;
-    FOR(max(5ll,last),left+1){
-        res+=dp(left-i,i);
-    }
-    return res;
+const int MAXN = 1e6;
+
+long long fac[MAXN + 1];
+long long inv[MAXN + 1];
+int pref[MAXN + 1];
+
+/** @return x^n modulo m in O(log p) time. */
+long long exp(long long x, long long n, long long m) {
+	x %= m;  // note: m * m must be less than 2^63 to avoid ll overflow
+	long long res = 1;
+	while (n > 0) {
+		if (n % 2 == 1) { res = res * x % m; }
+		x = x * x % m;
+		n /= 2;
+	}
+	return res;
 }
 
+/** Precomputes n! from 0 to MAXN. */
+void factorial(long long p) {
+	fac[0] = 1;
+	for (int i = 1; i <= MAXN; i++) { fac[i] = fac[i - 1] * i % p; }
+}
+/** Precomputes n(n+1)/2 from 0 to MAXN. */
+void prefcalc(long long p) {
+	pref[0] = 0;
+	for (int i = 1; i <= MAXN; i++) { pref[i] = (pref[i - 1] + i*(i+1)/2) % p; }
+}
+
+/**
+ * Precomputes all modular inverse factorials
+ * from 0 to MAXN in O(n + log p) time
+ */
+void inverses(long long p) {
+	inv[MAXN] = exp(fac[MAXN], p - 2, p);
+	for (int i = MAXN; i >= 1; i--) { inv[i - 1] = inv[i] * i % p; }
+}
+
+/** @return nCr mod p */
+long long choose(long long n, long long r, long long p) {
+	return fac[n] * inv[r] % p * inv[n - r] % p;
+}
 ll n=0, m=0, k=0, q=0;
+vector<int> factor(int n) {
+	vector<int> ret;
+	for (int i = 2; i * i <= n; i++) {
+		while (n % i == 0) {
+			ret.push_back(i);
+			n /= i;
+		}
+	}
+	if (n > 1) { ret.push_back(n); }
+	return ret;
+}
 void solve(int tc){
-    cin>>n;
-    FOR(0,105)JFOR(0,105)memo[i][j]=-1;
-    cout<<dp(n,0);
+    // ~10k prime numbers from 1 to 1e5
+    cin>>k>>n;
+    factorial(MOD);
+    inverses(MOD);
+    cout<<n<<' ';
+    FOR(2,k+1){
+        vi primes=factor(i);
+        int ans=0;
+        // if(primes.size()>n) 
+        //     ans+=((primes.size()-n+1)*fac[primes.size()])%MOD;
+        // else{
+        FOR(1,min((int)primes.size(),n)+1){
+            int ones=n-i;
+            // find number of ways to place i numbers in ones+i spaces
+            ans+=(fac[ones+i]+MOD)/(fac[ones]+MOD)%MOD;
+            ans%=MOD;
+        }
+        cout<<ans<<' ';
+    }
+    cout<<el;
     
 }
-
-/*
-m(16)
-5 + 5 + 6
-5 + 11
-6 + 10
-7 + 9
-8 + 8
-16
-
-ans = 6
-
-m(11)
-5 + 6
-11
-
-m(12)
-5 + 7
-6 + 6
-12
-*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
@@ -108,7 +145,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);
