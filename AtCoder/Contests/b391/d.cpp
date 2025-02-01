@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -55,37 +55,73 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 // #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+const ll INF = 1e15;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-bool cmp(ii l, ii r){
-    return ((ld)r.F/(ld)r.S) < ((ld)l.F/(ld)l.S);
-}
-
 ll n=0, m=0, k=0, q=0;
 void solve(int tc){
-    int n,k;cin>>n>>k;
-    vii a(n);
-    for(auto &x:a)cin>>x.F;for(auto &x:a)cin>>x.S;
-    sort(all(a),cmp);
-    int ans=0,alert=0;
-    for(auto &x:a){
-        if(alert>k)break;
-        ans+=alert*x.S;
-        alert+=x.F;
-        show2(alert,ans);
+    int w;
+    cin>>n>>w;
+    vector<deque<ii>> cols(w);
+    vii blocks(n);
+    FOR(0,n){
+        int x,y;
+        cin>>x>>y;
+        x--,y--;
+        cols[x].pb({y,i});
+        blocks[i]={x,y};
     }
-    // knapsack
+    for(auto &x:cols)sort(all(x));
+
+    vi offset(w);
+    int elapsed=0;
+    int f=0;
+    vi ans(n,LLONG_MAX);
+    while(!f){
+        int tallest=0;
+        FOR(0,w){
+            if(cols[i].size()==0) f=1;
+            tallest=max(tallest,cols[i][0].F-elapsed);
+        }
+        if(f)break;
+        FOR(0,w){
+            ans[cols[i][0].S]=elapsed+tallest;
+            cols[i].pop_front();
+        }
+        elapsed+=tallest;
+    }
+    // show_vec(ans);
+    cin>>q;
+    while(q--){
+        int t,x;
+        cin>>t>>x;
+        x--;
+        if(t<=ans[x])cout<<"Yes\n";
+        else cout<<"No\n";
+    }
     
-    cout<<ans;
 }
 
 /*
-left < right
-C2 * S1 < C1 * S2
-C2/S2 < C1/S1
+
+4 2
+1 1
+2 2
+1 3
+2 4
+1
+1 1
+
+4 2
+1 1
+1 2
+2 2
+2 3
+1
+1 1
+
 */
 
 signed main(){

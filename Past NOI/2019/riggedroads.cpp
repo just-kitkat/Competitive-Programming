@@ -61,6 +61,9 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 ll n=0, m=0, k=0, q=0;
+vii initadj[300'005];
+vi depths;
+umap<int,ii> adj;
 class UnionFind{
 private:
     vi p,rank,setSize;
@@ -81,43 +84,150 @@ public:
     void unionSet(int i, int j){
         if(isSameSet(i,j))return;
         int x = findSet(i),y=findSet(j);
-        if(rank[x]>rank[y])swap(x,y);
+        if(depths[x]<depths[y])swap(x,y);
         p[x]=y;
-        if(rank[x]==rank[y])++rank[y];
+        // if(rank[x]==rank[y])++rank[y];
         setSize[y]+=setSize[x];
         --numSets;
     }
 };
-umap<int,vii>adj;
-vector<char>ans;
-int mm=0;
-void dfs(int v, int u, char c, int prev){
-    ans[v]=c;
-    int low=prev;
-    for(auto &x:adj[v]){
-        if(x.F!=u)low=min(low,x.S),dfs(x.F,v,(c=='D'?'B':'D'),x.S);
+void dfs(int v, int u, int depth){
+    depths[v]=depth;
+    for(auto &x:initadj[v]){
+        if(x.F==u)continue;
+        adj[x.F]={v,x.S};
+        dfs(x.F,v,depth+1);
     }
-    mm=max(low,mm);
 }
+
+bool cmp(vi l, vi r){
+    return l.back() < r.back();
+}
+
 void solve(int tc){
-    cin>>n>>m;
-    ans.resize(n+1);
-    vector<vi> edges(m,vi(3));
-    for(auto &x:edges)cin>>x[1]>>x[2]>>x[0];
-    sort(all(edges));
-    UnionFind uf(n+5);
+    int e;
+    cin>>n>>e;
+    vii edges(e);
+    UnionFind uf(300'005);
+    set<int>tree;
+    depths.resize(n+5);
+    vi ans(e);
     for(auto &x:edges){
-        int u=x[1],v=x[2];
-        if(uf.isSameSet(u,v))continue;
-        uf.unionSet(u,v);
-        adj[u].pb({v,x[0]});
-        adj[v].pb({u,x[0]});
+        cin>>x.F>>x.S;
+        x.F--,x.S--;
     }
-    dfs(1,-1,'B',LLONG_MAX);
-    cout<<mm<<el;
-    FOR(1,n+1)cout<<ans[i];
+    FOR(0,n-1){
+        int ind;cin>>ind;ind--;
+        int u=edges[ind].F, v=edges[ind].S;
+        tree.insert(ind);
+        initadj[u].pb({v,ind});
+        initadj[v].pb({u,ind});
+    }
+    dfs(0,-1,0);
+    int cnt=1, ind=-1;
+    // for(auto &x:adj)cout<<x.F<<":"<<x.S.F<<","<<x.S.S<<el;
+    // exit(0);
+    // for(auto &x:tree)cout<<x.F<<","<<x.S<<"  ";cout<<el;
+    for(auto &x:edges){
+        ind++;
+        if(tree.count(ind)){
+            if(ans[ind]==0){
+                ans[ind]=cnt;
+                cnt++;
+                uf.unionSet(x.F,x.S);
+            }
+            continue;
+        }
+        int u=x.F, v=x.S;
+        vector<vi> use;
+        while(u!=v){
+            while(depths[u]>depths[v]){
+                if(uf.findSet(u)!=u){
+                    u=uf.findSet(u);
+                    continue;
+                }
+                use.pb({u,adj[u].F,adj[u].S}),
+                u=adj[u].F;
+            }
+            if(u==v)break;
+            while(depths[u]<depths[v]){
+                if(uf.findSet(v)!=v){
+                    v=uf.findSet(v);
+                    continue;
+                }
+                use.pb({v,adj[v].F,adj[v].S}),
+                v=adj[v].F;
+            }
+            if(u==v)break;
+            if(depths[u]==depths[v]){
+                if(uf.findSet(u)!=u or uf.findSet(v)!=v){
+                    u=uf.findSet(u), v=uf.findSet(v);
+                    continue;
+                }
+                use.pb({u,adj[u].F,adj[u].S}),
+                use.pb({v,adj[v].F,adj[v].S}),
+                u=adj[u].F,
+                v=adj[v].F;
+            }
+        }
+        sort(all(use), cmp);
+        for(auto &x:use){
+            // show2(cnt,ind);
+            // show_vec(x);
+            if(ans[x[2]]==0 and !uf.isSameSet(x[0],x[1])){
+                ans[x[2]]=cnt,cnt++;
+                uf.unionSet(x[0],x[1]);
+            }
+        }
+        if(ans[ind]==0){
+            ans[ind]=cnt;
+            cnt++;
+        }
+    }
+    int inc=0;
+    // mex??
+    set<int>ss;
+    // show_vec(ans);
+    FOR(1,300'005)ss.insert(i);
+    FOR(0,e){
+        if(ans[i]==0){
+            ans[i]=*ss.begin();
+            ss.erase(*ss.begin());
+            inc++;
+        }
+        else{
+            ans[i]+=inc;
+            ss.erase(ans[i]);
+        }
+    }
+    assert(*min_element(all(ans))>0);
+    for(auto &x:ans)cout<<x<<' ';
     
 }
+
+/*
+
+5 6
+1 2
+2 5
+1 3
+2 4
+3 4
+3 5
+1 3 4 6
+
+ 1
+2 3
+4 5
+
+4 5
+2 3
+0 1
+1 2
+0 2
+0 3
+2 4 5
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);

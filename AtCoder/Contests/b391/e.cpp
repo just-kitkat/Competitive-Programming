@@ -1,5 +1,5 @@
 // Author: JustKitkat
-// Status: WIP
+// Status: AC
 
 #include <bits/stdc++.h>
 // #include <ext/pb_ds/assoc_container.hpp>
@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -55,38 +55,55 @@ chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<e
 // #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+const ll INF = 1e15;
 const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
-bool cmp(ii l, ii r){
-    return ((ld)r.F/(ld)r.S) < ((ld)l.F/(ld)l.S);
-}
-
 ll n=0, m=0, k=0, q=0;
-void solve(int tc){
-    int n,k;cin>>n>>k;
-    vii a(n);
-    for(auto &x:a)cin>>x.F;for(auto &x:a)cin>>x.S;
-    sort(all(a),cmp);
-    int ans=0,alert=0;
-    for(auto &x:a){
-        if(alert>k)break;
-        ans+=alert*x.S;
-        alert+=x.F;
-        show2(alert,ans);
+ii dp(string s){ // {majority, change}
+    int n=s.size();
+    if(n==3){
+        int cnt0=0;
+        for(auto &x:s)cnt0+=x=='0';
+        int change;
+        if(cnt0==0 or cnt0==3)change=2;
+        else change=1;
+        // show2((cnt0>=2?'0':'1'),change);
+        return {(cnt0>=2?'0':'1'),change};
     }
-    // knapsack
-    
-    cout<<ans;
-}
+    vector<pair<char,int>>options;
+    FOR(0,3){
+        string proc;
+        JFOR(0,n/3){
+            proc+=s[i*(n/3)+j];
+            // show(proc);
+        }
+        // show(proc);
+        options.pb(dp(proc));
+    }
+    char majority='1';
+    int cnt=0;
+    for(auto &x:options)if(x.F=='0')cnt++;
+    if(cnt>=2)majority='0';
+    int change;
+    vi o;
+    for(auto &x:options)if(x.F==majority)o.pb(x.S);
+    sort(all(o));
+    // show_vec(o);
+    if(cnt==0 or cnt==3)change=o[0]+o[1];
+    else change=o[0];
+    // show2(majority,change);
+    return {majority,change};
 
-/*
-left < right
-C2 * S1 < C1 * S2
-C2/S2 < C1/S1
-*/
+}
+void solve(int tc){
+    cin>>n;
+    string s;
+    cin>>s;
+    cout<<dp(s).S;
+    
+}
 
 signed main(){
     ios_base::sync_with_stdio(0);
