@@ -1,13 +1,13 @@
 // Author: JustKitkat
-// Status: WIP 31/100
+// Status: AC
 
 #include <bits/stdc++.h>
-//#include <ext/pb_ds/assoc_container.hpp>
-//#include <ext/pb_ds/tree_policy.hpp>
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 
-//#pragma GCC optimize("O3,unroll-loops")
-//#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #define int long long
 #define el "\n"
@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -48,41 +48,53 @@ mt19937_64 rnd(chrono::steady_clock::now().time_since_epoch().count());
 
 #define __time__ { auto duration = chrono::duration<double>( /* Show runtime */ \
 chrono::high_resolution_clock::now() - BEG); cout<<"Time: "<<duration.count()<<endl;}
-#define __output__ { FILE* file = freopen("../../../Testcases/test.out", "w", stdout); }
-#define __input__ { FILE* file = freopen("../../../Testcases/test.in", "r", stdin); }
 
 // PBDS -> initialise using `ordered_set s;` -> change to greater<int> for reversed order.
-//using namespace __gnu_pbds;
-//#define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
-//#define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
+// using namespace __gnu_pbds;
+// #define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
+// #define ordered_multiset tree<int, null_type, less_equal<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 const int MAX_N = 1e5 + 5;
-const ll INF = 1e9;
+const ll INF = 1e15;
+const ll MOD = 1e9+7;
 const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
-int x;
-const int MOD=1e9+7;
-int memo[5005][5005];
-int f(int n, int k){
-    int ans=0;
-    if(memo[n][k]!=-1)return memo[n][k];
-    if(k<0) return 0;
-    if(k==0) return 1;
-    if(n==1) return k<=x;
-    FOR(0,min(x+1,k+1)){
-        ans += f(n-1, k-i);
-        ans %= MOD;
-    }
-    // ans+=psum(n,k);
-    memo[n][k]=ans;
-    return ans;
-}
 
 ll n=0, m=0, k=0, q=0;
+umap<int,vi>adj;
+vi topo;
+int cycle=0;
+int vis[1003]={0};
+void dfs(int u){
+    if(vis[u])return; vis[u]=1;
+    for(auto &x:adj[u])if(!vis[x])dfs(x);
+    topo.push_back(u);
+}
 void solve(int tc){
-    FOR(0,5005)JFOR(0,5005)memo[i][j]=-1;
-    cin>>n>>k>>x;
-    cout<<f(n,k);
+    cin>>n>>m;
+    unordered_set<int>ss;
+    FOR(1,n+1)ss.insert(i);
+    FOR(0,m){
+        int v1,v2,v3;
+        char op;
+        cin>>v1>>op>>v2>>op>>v3;
+        if(op=='>'){
+            adj[v1].pb(v3);
+            adj[v2].pb(v3);
+            if(ss.count(v3))ss.erase(v3);
+        }else{
+            adj[v1].pb(v2);
+            adj[v1].pb(v3);
+            if(ss.count(v2))ss.erase(v2);
+            if(ss.count(v3))ss.erase(v3);
+        }
+    }
+    if(ss.empty()){
+        cout<<0;return;
+    }
+    for(auto &i:ss)dfs(i);
+    reverse(all(topo));
+    for(auto &x:topo)cout<<x<<' ';
     
 }
 
@@ -90,8 +102,8 @@ signed main(){
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
-    //__output__ // Redirect output to test.out
-    //__input__ // Read test.in for input
+    // freopen("out", "w", stdout);
+    // freopen("in", "r", stdin);
 
     int tc = 1;
     // cin >> tc;

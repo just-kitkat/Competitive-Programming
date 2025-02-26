@@ -1,5 +1,7 @@
 /*
-
+// most range queries in O(log n), range min/max queries in O(1)
+// arrays are immutable, no updates.
+// O(nlogn) precomputation
 struct SparseTable {
     vector<vector<int> > ST;
     int N, K;

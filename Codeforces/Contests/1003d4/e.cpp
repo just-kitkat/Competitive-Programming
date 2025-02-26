@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -61,27 +61,76 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 ll n=0, m=0, k=0, q=0;
-
 void solve(int tc){
-    int c,p;
-    cin>>c>>p;
-    vii contests(c), problems(p);
-    for(auto &x:contests)cin>>x.F>>x.S;
-    for(auto &x:problems)cin>>x.F>>x.S;
-    sort(all(contests));
-    sort(all(problems));
-    priority_queue<int> cs;
-    int lc=0;
-    int ans=0;
-    for(auto &x:problems){
-        while(lc<c and contests[lc].F<=x.F)cs.push(contests[lc].S),lc++;
-        if(cs.empty())continue;
-        int tt=cs.top();
-        ans+=max(0ll,tt-x.S);
-        if(tt-x.S>0)cs.pop(),cs.push(x.S);
+    cin>>n>>m>>k; // n 0s and m 1s
+    string ans;
+    if(k>max(m,n)){cout<<-1<<el;return;}
+    FOR(0,k)ans+=(n>m?'0':'1');
+    if(ans[0]=='0')n-=k;else m-=k;
+    int pos=1;
+    if(ans[0]=='0' and (n-m>0 or m-n>k))pos=0;
+    if(ans[0]=='1' and (m-n>0 or n-m>k))pos=0;
+    if(n==0 and m==0){
+        cout<<ans<<el;return;
     }
-    cout<<ans;
-    
+    if(ans[0]=='0'){
+        char cur='1';
+        m--;
+        if(m<0)pos=0;
+        while(pos){
+            ans+=cur;
+            if(cur=='1' and n>0)cur='0';
+            else if(cur=='0' and m>0)cur='1';
+            if(n==0 and m==0)break;
+            if(cur=='0')n--;else m--;
+        }
+    }
+    if(ans[0]=='1'){
+        char cur='0';
+        n--;
+        if(n<0)pos=0;
+        while(pos){
+            ans+=cur;
+            if(cur=='1' and n>0)cur='0';
+            else if(cur=='0' and m>0)cur='1';
+            if(n==0 and m==0)break;
+            if(cur=='0')n--;else m--;
+        }
+    }
+    if(!pos)cout<<-1<<el;
+    else cout<<ans<<el;
+    // int sw=0;
+    // if(m>n)sw=1,swap(n,m);
+    // // now n largest
+    // FOR(0,k)ans+=(sw?'1':'0');
+    // n-=k;
+    // int pos=1;
+    // if(n<0)pos=0;
+    // if(m-n>k)pos=0;
+    // if(!pos){cout<<-1<<el;return;}
+    // char cur=(sw?'0':'1');
+    // if(cur=='0' and (sw?m:n)<=0)cur='1';
+    // else if(cur=='1' and (sw?n:m))cur='0';
+    // int tt=n+m;
+    // FOR(0,tt){
+    //     // show2(n,m);
+    //     ans+=cur;
+    //     if(cur=='0')(sw?m--:n--);
+    //     else(sw?n--:m--);
+    //     if(cur=='0' and (sw?n:m)>0)cur='1';
+    //     else if(cur=='1' and (sw?m:n)>0)cur='0';
+    //     show2(n,m);
+    //     // show2(ans,cur);
+    // }
+    // reverse(all(ans));
+    // int c=1;
+    // FOR(1,ans.size())if(ans[i]==ans[i-1])c++;else break;
+    // // show(c);
+    // if(ans.back()==ans[0] and c>1)pos=0;
+    // if(ans.back()!=ans[0] and c>k)pos=0;
+    // if(!pos){cout<<-1<<el;return;}
+    // cout<<ans<<el;
+
 }
 
 signed main(){
@@ -92,7 +141,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

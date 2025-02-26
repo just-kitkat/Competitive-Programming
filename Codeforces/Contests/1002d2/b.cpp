@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -61,27 +61,92 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 ll n=0, m=0, k=0, q=0;
-
 void solve(int tc){
-    int c,p;
-    cin>>c>>p;
-    vii contests(c), problems(p);
-    for(auto &x:contests)cin>>x.F>>x.S;
-    for(auto &x:problems)cin>>x.F>>x.S;
-    sort(all(contests));
-    sort(all(problems));
-    priority_queue<int> cs;
-    int lc=0;
-    int ans=0;
-    for(auto &x:problems){
-        while(lc<c and contests[lc].F<=x.F)cs.push(contests[lc].S),lc++;
-        if(cs.empty())continue;
-        int tt=cs.top();
-        ans+=max(0ll,tt-x.S);
-        if(tt-x.S>0)cs.pop(),cs.push(x.S);
+    cin>>n>>k;
+    vi a(n);
+    for(auto &x:a)cin>>x;
+    int back=n-k;
+    int ans=LLONG_MAX;
+    int prev=-1;
+    if(k==n){
+        int c=1,ind=1;
+        FOR(1,n){
+            if(a[i]!=ind){cout<<c<<el;return;}
+            ++c;
+            ++i;
+            if(i>=n)break;
+            ++ind;
+        }
+        cout<<ind+1<<el;
+        return;
     }
-    cout<<ans;
-    
+    FOR(1,n-k+2){
+        if(a[i]!=1)ans=1;
+        if(prev==1)ans=min(ans,2ll);
+        prev=a[i];
+    }
+
+    cout<<ans<<el;
+    // if(a[1]!=1){
+    //     cout<<1<<el;
+    //     return;
+    // }
+    // if(n<=3){cout<<2<<el;return;}
+    // // case where k <= 2
+    // if(n-k>=2){
+    //     // you can split [1],[a,b],[c] or [1],[a,b,c]
+    //     if(k==2){
+    //         if(*max_element(a.begin()+1,a.end())!=1){
+    //             cout<<1<<el;
+    //             return;
+    //         }
+    //         cout<<2<<el;
+    //     }
+    //     if(a[2]==2){
+    //         if(a[3]==2)cout<<3<<el;
+    //         else cout<<2<<el;
+    //         return;
+    //     }else{
+    //         cout<<2<<el;
+    //         return;
+    //     }
+    // }else if(n-k>=1){
+    //     // max one split of [a,b]
+    //     // edge case: [0,a],[b]
+    //     if(a[2]!=1)cout<<1<<el;
+    //     else cout<<2<<el;
+
+    // }else{
+    //     // no splits, bruteforce
+    //     int c=1,ind=1;
+    //     FOR(1,n-2){
+    //         if(a[i]!=ind){cout<<c<<el;return;}
+    //         ++c;
+    //         ++i;
+    //         ++ind;
+    //     }
+    //     cout<<ind+1<<el;
+    // }
+    // FOR(1,n-2){
+    //     if(i>back){
+    //         break;
+    //     }
+    //     int c;
+    //     if(a[i]!=1)c=1;
+    //     else if(a[i+2]!=2)c=2;
+    //     else c=LLONG_MAX;
+    //     ans=min(ans,c);
+    //     show2(i,ans);
+    // }
+    // int ind=1,i=max(1ll,back-1);
+    // while(i<n){
+    //     if(a[i]!=ind)ans=min(ans,ind);
+    //     ++ind, i+=2;
+    //     show3(i,ind,ans);
+    // }
+    // if(ans==LLONG_MAX)ans=ind;
+    // cout<<ans<<el;
+    // cout<<flush;
 }
 
 signed main(){
@@ -92,7 +157,7 @@ signed main(){
     // freopen("in", "r", stdin);
 
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve(t);

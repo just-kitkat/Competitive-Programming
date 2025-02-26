@@ -27,14 +27,14 @@ using namespace std;
 #define F first
 #define S second
 #define all(a) (a).begin(), (a).end()
-#define FOR(a,b) for(auto i=a;i<b;++i)
-#define DFOR(a,b) for(auto i=a;i>=b;--i)
-#define JFOR(a,b) for(auto j=a;j<b;++j)
-#define DJFOR(a,b) for(auto j=a;j>=b;--j)
+#define FOR(a,b) for(int i=a;i<b;++i)
+#define DFOR(a,b) for(int i=a;i>=b;--i)
+#define JFOR(a,b) for(int j=a;j<b;++j)
+#define DJFOR(a,b) for(int j=a;j>=b;--j)
 #define show(x) cerr << #x << " is " << x << endl;
 #define show2(x,y) cerr << #x << " is " << x << " " << #y << " is " << y << endl;
 #define show3(x,y,z) cerr << #x << " is " << x << " " << #y << " is " << y << " " << #z << " is " << z << endl;
-#define show_vec(a) for(auto &x:a)cerr<<x<<' ';cerr<<endl;
+#define show_vec(a) { for(auto &x:a)cerr<<x<<' '; cerr<<endl; }
 #define discretize(x) sort(x.begin(), x.end()); x.erase(unique(x.begin(), x.end()), x.end());
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -61,28 +61,76 @@ const double PI = acos(-1);
 const auto BEG = std::chrono::high_resolution_clock::now(); //Begining of the program
 
 ll n=0, m=0, k=0, q=0;
-
 void solve(int tc){
-    int c,p;
-    cin>>c>>p;
-    vii contests(c), problems(p);
-    for(auto &x:contests)cin>>x.F>>x.S;
-    for(auto &x:problems)cin>>x.F>>x.S;
-    sort(all(contests));
-    sort(all(problems));
-    priority_queue<int> cs;
-    int lc=0;
+    cin>>n>>m>>k;
+    int a,b,c;
+    cin>>a>>b>>c; // normal, express, semiexpress
+    int t;
+    cin>>t;
+    vi s(m);
+    for(auto &x:s)cin>>x;
+    sort(all(s));
+    // show_vec(s);
+    vi result;
+    int need=k-m;
+    // show(need);
     int ans=0;
-    for(auto &x:problems){
-        while(lc<c and contests[lc].F<=x.F)cs.push(contests[lc].S),lc++;
-        if(cs.empty())continue;
-        int tt=cs.top();
-        ans+=max(0ll,tt-x.S);
-        if(tt-x.S>0)cs.pop(),cs.push(x.S);
+    FOR(0,s.size()-1){ // iterate all express trains
+        int cost=s[i]*b-b;
+        if(cost>t)break;
+        ans++; // you are able to reach current station
+        // check how many can you go via normal train
+        int normal=min(s[i+1]-s[i]-1,(t-cost)/a);
+        // show(normal);
+        // if(s[i]+normal>=s[i+1]){
+        //     ans+=s[i+1]-s[i];
+        //     continue; // can get to next express using normal
+        // }
+        ans+=normal;
+        
+        // now try to use semiexpress nonsense
+        int cur=s[i]+normal+1; // you start from cur+1 to s[i+1]
+        cost+=normal*c+c; // travel using semiexpress
+        // if a semiexpress is placed at cur, how far can you go
+        int cnt=0;
+        while(cost<=t and cur<s[i+1]){
+            // show("e");
+            // show3(cur,normal,cost);
+            normal=min(s[i+1]-cur,(t-cost)/a+1);
+            if(normal<=0)break;
+            result.pb(normal);
+            cur+=normal;
+            cost+=normal*c;
+            cnt++;
+            if(cnt>=need)break;
+        }
+        // show(ans);
     }
-    cout<<ans;
+    ans+=(n-1)*b<=t;
+    sort(all(result));
+    while(need-- and result.size())ans+=result.back(),result.pop_back();
+    cout<<ans-1;  // exclude station 1
     
 }
+
+/*
+
+12 3 4
+10 1 2
+30
+1
+11
+12
+           v       v     v
+1 2  3  4  5 6  7  8  9  10 11 12
+0 10 20 30 8 18 28 14 24 18 10 20
+
+
+x       v     x     v  v  x 
+1 2  3  4  5  6  7  8  9  10
+0 10 20 15 25 15 25 25 30 35
+
+*/
 
 signed main(){
     ios_base::sync_with_stdio(0);
