@@ -1,0 +1,7 @@
+missed gold by ~4pts
+
+- fakesolved q2 with segtree (1h wasted)
+- thought a TLE was a WA (1h wasted)
+- couldnt debug segfault in the last 30 mins (typed grid[x][y] instead of vis[x][y])
+
+life is cruel :(
